@@ -1,0 +1,48 @@
+{% extends "_base.html" %}
+
+{% block title %}Job Hunters - Login{% endblock %}
+
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'login.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="login__container">
+    <div class="card login__card">
+        <form method="post" class="login__form">
+            {% csrf_token %}
+
+            <h2>Login</h2>
+
+            <div class="form__field">
+                <label for="email">Email</label>
+                <input id="email" type="text" name="email" placeholder="Email" class="form__input" value="{{ form.email.value }}" />
+                {% if form.email.errors %}
+                    <ul class="form__error__list">
+                        {% for error in form.email.errors %}
+                            <li class="form__error__item">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="form__field">
+                <label for="password">Password</label>
+                <input id="password" type="password" name="password" placeholder="Password" class="form__input" value="{{ form.password.value }}" />
+                {% if form.password.errors %}
+                    <ul class="form__error__list">
+                        {% for error in form.password.errors %}
+                            <li class="form__error__item">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            
+            <button type="submit">Login</button>
+        </form>
+
+        <a href="{% url 'register' %}">Don't have an account? Register here</a>
+    </div>
+</div>
+{% endblock %}

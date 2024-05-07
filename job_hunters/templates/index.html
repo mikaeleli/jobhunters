@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'index.css' %}">
-    <title>Job Hunters</title>
-</head>
-<body>
-    <h1>Welcome, sucka</h1>
-</body>
-</html>
+{% extends "_base.html" %}
+
+{% block title %}Job Hunters{% endblock %}
+
+{% block content %}
+    <h2>Home</h2>
+    <p>Welcome to Job Hunters! This is a simple job board where you can create and view job listings.</p>
+{% endblock %}

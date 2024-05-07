@@ -1,0 +1,12 @@
+:root {
+    --color-primary: #345995;
+    --color-primary-light: #DCE9FF;
+    --color-secondary: #70A288;
+    --color-danger: #D90000;
+    --color-danger-light: #FFD0D0;
+    --color-info: #0059C1;
+    --color-info-light: #D0E6FF;
+    --color-success: #008C16;
+    --color-success-light: #D0FFD8;
+    --box-shadow: 0 4px 16px 0 rgb(0 0 0 / 5%);
+}

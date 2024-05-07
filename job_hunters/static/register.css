@@ -1,0 +1,18 @@
+.register__container {
+    display: flex;
+    justify-content: center;
+}
+
+.card {
+    background: #fff;
+    border-radius: 32px;
+    padding: 64px;
+    box-shadow: var(--box-shadow);
+    width: 600px;
+}
+
+.register__form {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
