@@ -47,11 +47,17 @@ class RegisterForm(forms.Form):
         data = self.cleaned_data
 
         profile_image = Image.objects.create(
-            image=data.get("profile_image"),
             image_data=data.get("profile_image").read(),
         )
 
-        first_name, last_name = data.get("full_name").split(" ")
+        names = data.get("full_name").split(" ")
+        if len(names) > 1:
+            last_name = names[-1]
+            first_name = " ".join(names[0:-1])
+
+        else:
+            first_name = names[0]
+            last_name = ""
 
         user = User.objects.create_user(
             email=data.get("email"),
