@@ -1,0 +1,82 @@
+{% extends "_base.html" %}
+
+{% block title %}Job Hunters - Create a new account{% endblock %}
+
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'register.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="register__container">
+    <div class="card">
+        <form method="post" enctype="multipart/form-data" class="register__form">
+            {% csrf_token %}
+
+            <h2>Create an account</h2>
+
+            <div class="form__field">
+                <label for="full_name">Full name</label>
+                <input id="full_name" type="text" name="full_name" placeholder="Full name" class="form__input" value="{{ form.full_name.value }}" />
+                {% if form.full_name.errors %}
+                    <ul class="form__error__list">
+                        {% for error in form.full_name.errors %}
+                            <li class="form__error__item">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="form__field">
+                <label for="email">Email</label>
+                <input id="email" type="email" name="email" placeholder="Email" class="form__input" value="{{ form.email.value }}" />
+                {% if form.email.errors %}
+                    <ul class="form__error__list">
+                        {% for error in form.email.errors %}
+                            <li class="form__error__item">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="form__field">
+                <label for="password">Password</label>
+                <input id="password" type="password" name="password" placeholder="Password" class="form__input" value="{{ form.password.value }}" />
+                {% if form.password.errors %}
+                    <ul class="form__error__list">
+                        {% for error in form.password.errors %}
+                            <li class="form__error__item">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="form__field">
+                <label for="confirm_password">Confirm password</label>
+                <input id="confirm_password" type="password" name="confirm_password" placeholder="Confirm password" class="form__input" value="{{ form.confirm_password.value }}" />
+                {% if form.confirm_password.errors %}
+                    <ul class="form__error__list">
+                        {% for error in form.confirm_password.errors %}
+                            <li class="form__error__item">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="form__field">
+                <label for="profile_image">Profile image</label>
+                <input id="profile_image" type="file" name="profile_image" value="{{ form.profile_image.value }}" />
+                {% if form.profile_image.errors %}
+                    <ul class="form__error__list">
+                        {% for error in form.profile_image.errors %}
+                            <li class="form__error__item">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            
+            <button type="submit">Create an account</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

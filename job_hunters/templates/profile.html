@@ -1,0 +1,64 @@
+{% extends "_base.html" %}
+
+{% block title %}Job Hunters - Profile{% endblock %}
+
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'profile.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="profile__container">
+    <div class="profile__image-card">
+        <img src="{{ image_data }}" height="100%" width="100%" />
+    </div>
+
+    <div class="card profile__card">
+        <form method="post" enctype="multipart/form-data" class="profile__form">
+            {% csrf_token %}
+
+            <h2>My profile</h2>
+
+            <div class="form__field">
+                <label for="first_name">First name</label>
+                <input id="first_name" type="text" name="first_name" placeholder="First name" class="form__input" value="{{ user.first_name }}" />
+                {% if form.first_name.errors %}
+                    <ul class="form__error__list">
+                        {% for error in form.first_name.errors %}
+                            <li class="form__error__item">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="form__field">
+                <label for="last_name">Last name</label>
+                <input id="last_name" type="text" name="last_name" placeholder="Last name" class="form__input" value="{{ user.last_name }}" />
+                {% if form.last_name.errors %}
+                    <ul class="form__error__list">
+                        {% for error in form.first_name.errors %}
+                            <li class="form__error__item">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="form__field">
+                <label for="profile_image">Profile image</label>
+                <input id="profile_image" type="file" name="profile_image" value="{{ form.profile_image.value }}" />
+                {% if form.profile_image.errors %}
+                    <ul class="form__error__list">
+                        {% for error in form.profile_image.errors %}
+                            <li class="form__error__item">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <button type="submit">
+                Save profile
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
