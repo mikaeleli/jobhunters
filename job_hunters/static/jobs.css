@@ -1,0 +1,86 @@
+.jobs__container {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+    width: 100%;
+}
+
+.jobs__filter {
+    padding: 32px;
+    height: max-content;
+}
+
+.jobs__filter__form {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.jobs__list {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    flex: 1;
+}
+
+.jobs__item {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding: 32px;
+}
+
+.jobs__item__title__container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.jobs__item__title {
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.jobs__item__subtitle {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.jobs__item__action__container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.jobs__item__dates__container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-size: 16px;
+}
+
+.jobs__item__date {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+}
+
+.jobs__item__link {
+    background: var(--color-primary);
+    color: #fff;
+    height: 48px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius:8px;
+    text-decoration: none;
+}
+
+.no-jobs {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}

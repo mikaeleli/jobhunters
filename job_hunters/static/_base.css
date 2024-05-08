@@ -104,3 +104,12 @@ footer {
 .footer__navigation__section__item {
     font-size: 16px;
 }
+
+.footer__navigation__section__item__link {
+    text-decoration: none;
+    color: #fff;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}

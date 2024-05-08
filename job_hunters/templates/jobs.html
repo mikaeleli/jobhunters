@@ -1,0 +1,102 @@
+{% extends "_base.html" %}
+
+{% block title %}Job Hunters - Create a new account{% endblock %}
+
+{% block head %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'jobs.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="jobs__container">
+    <div class="jobs__list">
+        {% for job in jobs %}
+        <div class="card jobs__item">
+            <div class="jobs__item__title__container">
+                <h3 class="jobs__item__title">{{ job.title }}</h3>
+                <p class="jobs__item__subtitle">{{ job.offered_by.name }}</p>
+            </div>
+
+            <div class="jobs__item__action__container">
+                <div class="jobs__item__dates__container">
+                    <div class="jobs__item__date">
+                        <i class="fa-solid fa-square-plus"></i>
+                        <p>{{ job.posted_date }}</p>
+                    </div>
+                    <div class="jobs__item__date">
+                        <i class="fa-regular fa-calendar"></i>
+                        <p>{{ job.due_date }}</p>
+                    </div>
+                </div>
+
+                <a href="{% url 'jobs' %}{{ job.id }}" class="jobs__item__link">
+                    Details
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+
+        {% if not jobs %}
+        <div class="card no-jobs">
+            <h3>No results for the given filter 🤷‍♂️</h3>
+
+            <p>Check back later for more opportunities!</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="card jobs__filter">
+        <form class="jobs__filter__form" method="post">
+            {% csrf_token %}
+
+            <div class="form__field">
+                <label for="search">Search</label>
+                <input id="search" type="text" name="search" placeholder="Search" class="form__input" value="{{ form.search.value|default_if_none:"" }}" />
+            </div>
+
+            <div class="form__field">
+                <label for="category">Category</label>
+                <select name="category" class="form__input">
+                    <option></option>
+                    {% for category in form.categories %}
+                    <option value="{{ category.name }}" {% if form.category.value == category.name %}selected{% endif %} >{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form__field">
+                <label for="company">Company</label>
+                <select name="company" class="form__input">
+                    <option></option>
+                    {% for company in form.companies %}
+                    <option value="{{ company }}" {% if form.company.value == company.name %}selected{% endif %}>{{ company.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <label class="checkbox__label">
+                <input type="checkbox" name="include_applied" {% if form.include_applied.value %}checked{% endif %} />
+                Include applied jobs
+            </label>
+
+            <div class="form__field">
+                <label for="order_by">Order by</label>
+                <select name="order_by" class="form__input">
+                    <option></option>
+                    <!-- choice field -->
+                    {% for choice in form.order_by.field.choices %}
+                    <option value="{{ choice.0 }}" {% if form.order_by.value == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            
+
+            <button type="submit">
+                Search
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
