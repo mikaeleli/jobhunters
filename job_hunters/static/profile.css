@@ -1,23 +1,54 @@
 .profile__container {
-    display: flex;
-    gap: 32px;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 64px;
+    /*flex-direction: row;*/
     width: 100%;
+}
+
+.profile__container-userprofile {
+    grid-template-columns: 1fr 2fr 1fr;
+}
+
+.profile__container-companyprofile {
+    grid-template-columns: 2fr 1fr;
+}
+
+.profile__company-cover-image img {
+    max-height: 35ch;
+    object-fit: cover;
+}
+
+.profile__company-cover .profile__company-cover-logo {
+    display: flex;
+    flex-shrink: inherit;
+}
+
+.profile__company-cover .profile__company-cover-logo img {
+    border: 2px solid var(--color-primary);
+    width: 20%;
+    aspect-ratio: 1;
 }
 
 .profile__image-card {
     border-radius: 32px;
     box-shadow: var(--box-shadow);
-    width: 400px;
-    height: 400px;
+    aspect-ratio: 1;
     overflow: hidden;
+}
+
+.profile__image-card img {
+    object-fit: cover;
 }
 
 .profile__card {
     display: flex;
+    flex-direction: column;
     flex: 1;
-    max-width: 600px;
+    /*max-width: 600px;*/
 }
+
+
 
 .profile__form {
     display: flex;

@@ -22,7 +22,7 @@ class ProfileForm(forms.Form):
 
         user = self.user
 
-        if user.companyprofile.exists():
+        if hasattr(user, "companyprofile"):
             pass
 
         else:

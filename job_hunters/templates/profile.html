@@ -8,45 +8,76 @@
 {% endblock %}
 
 {% block content %}
-<div class="profile__container">
-    <div class="profile__image-card">
-        <img src="{{ image_data }}" height="100%" width="100%" />
-    </div>
+<div class="profile__container profile__container-{% if userprofile %}userprofile{% endif %}{% if companyprofile %}companyprofile{% endif %}">
+    {% if userprofile %}
+        <div class="profile__image-card">
+            <img src="{{ image_data }}" height="100%" width="100%" />
+        </div>
 
-    <div class="card profile__card">
-        <form method="post" enctype="multipart/form-data" class="profile__form">
-            {% csrf_token %}
+        <div class="card profile__card">
+            <form method="post" enctype="multipart/form-data" class="profile__form">
+                {% csrf_token %}
 
-            <h2>My profile</h2>
+                    <h2>My profile</h2>
 
-            <div class="form__field">
-                <label for="full_name">Full name</label>
-                <input id="full_name" type="text" name="full_name" placeholder="Full name" class="form__input" value="{{ user.userprofile.full_name }}" />
-                {% if form.full_name.errors %}
-                    <ul class="form__error__list">
-                        {% for error in form.full_name.errors %}
-                            <li class="form__error__item">{{ error }}</li>
-                        {% endfor %}
-                    </ul>
+                    <div class="form__field">
+                        <label for="full_name">Full name</label>
+                        <input id="full_name" type="text" name="full_name" placeholder="Full name" class="form__input" value="{{ user.userprofile.full_name }}" />
+                        {% if form.full_name.errors %}
+                            <ul class="form__error__list">
+                                {% for error in form.full_name.errors %}
+                                    <li class="form__error__item">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+
+                    <div class="form__field">
+                        <label for="profile_image">Profile image</label>
+                        <input id="profile_image" type="file" name="profile_image" value="{{ form.profile_image.value }}" class="form__file"/>
+                        {% if form.profile_image.errors %}
+                            <ul class="form__error__list">
+                                {% for error in form.profile_image.errors %}
+                                    <li class="form__error__item">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+
+                <button type="submit">
+                    Save profile
+                </button>
+            </form>
+        </div>
+    {% endif %}
+    {% if companyprofile %}
+        <div class="card profile__card">
+            <div class="profile__company-cover">
+                <div class="profile__company-cover-image">
+                {% if cover_data %}
+                    <img src="{{ cover_data }}" height="100%" width="100%" />
+                {% else %}
+                    <img src="{%  static 'profile_cover_placeholder.jpg' %}" height="100%" width="100%" />
                 {% endif %}
+                </div>
+                <div class="profile__company-cover-logo">
+                    <img src="{{ logo_data }}" height="100%" width="100%" />
+                </div>
             </div>
+            <div>
+                <form method="post" enctype="multipart/form-data" class="profile__form">
+                    {% csrf_token %}
 
-            <div class="form__field">
-                <label for="profile_image">Profile image</label>
-                <input id="profile_image" type="file" name="profile_image" value="{{ form.profile_image.value }}" class="form__file"/>
-                {% if form.profile_image.errors %}
-                    <ul class="form__error__list">
-                        {% for error in form.profile_image.errors %}
-                            <li class="form__error__item">{{ error }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
+                        <h2>Company profile</h2>
+                    <button type="submit">
+                        Save profile
+                    </button>
+                </form>
             </div>
-
-            <button type="submit">
-                Save profile
-            </button>
-        </form>
-    </div>
+        </div>
+        <div class="card profile__card">
+            <span>bingo</span>
+        </div>
+    {% endif %}
 </div>
 {% endblock %}
