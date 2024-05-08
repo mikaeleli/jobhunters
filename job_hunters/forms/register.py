@@ -50,26 +50,16 @@ class RegisterForm(forms.Form):
             image_data=data.get("profile_image").read(),
         )
 
-        names = data.get("full_name").split(" ")
-        if len(names) > 1:
-            last_name = names[-1]
-            first_name = " ".join(names[0:-1])
-
-        else:
-            first_name = names[0]
-            last_name = ""
-
         user = User.objects.create_user(
             email=data.get("email"),
-            username=data.get("email"),
-            first_name=first_name,
-            last_name=last_name,
+            username=data.get("email")
         )
         user.set_password(data.get("password"))
         user.save()
 
         user_profile = UserProfile.objects.create(
             user=user,
+            full_name=data.get("full_name"),
             profile_image=profile_image,
         )
 

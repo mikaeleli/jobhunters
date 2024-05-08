@@ -4,7 +4,8 @@
 
 {% block head %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'register.css' %}" />
+    <link rel="stylesheet" href="{% static 'register.css' %}" />
+    <script defer src="{% static 'register.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -14,6 +15,25 @@
             {% csrf_token %}
 
             <h2>Create an account</h2>
+
+            <div class="form__field">
+                <label for="account_type">Account type</label>
+                <div class="form__select">
+                    <select id="account_type">
+                        <option value="job_seeker">Job seeker</option>
+                        <option value="company">Company</option>
+                    </select>
+                    <div class="form__select_item form__select_selected" data-user-type="job_seeker"><span>Job seeker</span></div>
+                    <div class="form__select_item" data-user-type="company"><span>Company</span></div>
+                </div>
+                {% if form.full_name.errors %}
+                    <ul class="form__error__list">
+                        {% for error in form.full_name.errors %}
+                            <li class="form__error__item">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
 
             <div class="form__field">
                 <label for="full_name">Full name</label>

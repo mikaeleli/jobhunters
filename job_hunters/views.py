@@ -79,15 +79,26 @@ def profile_view(request):
     """
     View for the profile page.
     """
-
-    image = request.user.userprofile.profile_image
-    image_b64 = b64encode(image.image_data).decode("utf-8")
-    image_encoded = f"data:image/png;base64,{image_b64}"
-
     context = {
-        "user": request.user,
-        "image_data": image_encoded,
+        "user": request.user
     }
+
+    if hasattr(request.user, "companyprofile"):
+        logo_image = request.user.companyprofile.logo_image
+        cover_image = request.user.companyprofile.cover_image
+        logo_b64 = b64encode(logo_image.image_data).decode("utf-8")
+        cover_b64 = b64encode(cover_image.image_data).decode("utf-8")
+        logo_encoded = f"data:image/png;base64,{logo_b64}"
+        cover_encoded = f"data:image/png;base64,{cover_b64}"
+        context["logo_data"] = logo_encoded
+        context["cover_data"] = cover_encoded
+
+    else:
+        image = request.user.userprofile.profile_image
+        image_b64 = b64encode(image.image_data).decode("utf-8")
+        image_encoded = f"data:image/png;base64,{image_b64}"
+        context["image_data"] = image_encoded
+
 
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, user=request.user)
