@@ -1,0 +1,60 @@
+.applications__container {
+    display: flex;
+}
+
+.applications__list {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    flex: 1;
+}
+
+.application__item {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding: 32px;
+}
+
+.application__item__titles__container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.application__item__title {
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.application__item__title__container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.application__item__date {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    font-size: 16px;
+}
+
+.application__item__action__container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.application__item__link {
+    background: var(--color-primary);
+    color: #fff;
+    height: 48px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius:8px;
+    text-decoration: none;
+}
