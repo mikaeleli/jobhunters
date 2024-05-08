@@ -20,23 +20,11 @@
             <h2>My profile</h2>
 
             <div class="form__field">
-                <label for="first_name">First name</label>
-                <input id="first_name" type="text" name="first_name" placeholder="First name" class="form__input" value="{{ user.first_name }}" />
-                {% if form.first_name.errors %}
+                <label for="full_name">Full name</label>
+                <input id="full_name" type="text" name="full_name" placeholder="Full name" class="form__input" value="{{ user.userprofile.full_name }}" />
+                {% if form.full_name.errors %}
                     <ul class="form__error__list">
-                        {% for error in form.first_name.errors %}
-                            <li class="form__error__item">{{ error }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </div>
-
-            <div class="form__field">
-                <label for="last_name">Last name</label>
-                <input id="last_name" type="text" name="last_name" placeholder="Last name" class="form__input" value="{{ user.last_name }}" />
-                {% if form.last_name.errors %}
-                    <ul class="form__error__list">
-                        {% for error in form.first_name.errors %}
+                        {% for error in form.full_name.errors %}
                             <li class="form__error__item">{{ error }}</li>
                         {% endfor %}
                     </ul>
@@ -45,7 +33,7 @@
 
             <div class="form__field">
                 <label for="profile_image">Profile image</label>
-                <input id="profile_image" type="file" name="profile_image" value="{{ form.profile_image.value }}" />
+                <input id="profile_image" type="file" name="profile_image" value="{{ form.profile_image.value }}" class="form__file"/>
                 {% if form.profile_image.errors %}
                     <ul class="form__error__list">
                         {% for error in form.profile_image.errors %}

@@ -41,8 +41,11 @@
             
             <button type="submit">Login</button>
         </form>
-
-        <a href="{% url 'register' %}">Don't have an account? Register here</a>
+        <div class="login__register">
+            <hr class="login__divider">
+            <strong>Don't have an account?</strong>
+            <a class="form__button form__button_secondary" href="{% url 'register' %}"><span>Create an account</span></a>
+        </div>
     </div>
 </div>
 {% endblock %}

@@ -16,6 +16,7 @@ class UserProfile(models.Model):
 
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=255, blank=True)
     profile_image = models.OneToOneField(
         Image, on_delete=models.CASCADE, related_name="profile_image"
     )

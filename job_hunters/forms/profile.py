@@ -14,8 +14,7 @@ class ProfileForm(forms.Form):
         self.user = kwargs.pop("user")
         super().__init__(*args, **kwargs)
 
-    first_name = forms.CharField(max_length=255)
-    last_name = forms.CharField(max_length=255)
+    full_name = forms.CharField(max_length=255)
     profile_image = forms.ImageField(required=False)
 
     def save(self):
@@ -23,11 +22,16 @@ class ProfileForm(forms.Form):
 
         user = self.user
 
-        user.first_name = data.get("first_name")
-        user.last_name = data.get("last_name")
+        if user.companyprofile.exists():
+            pass
 
-        if data.get("profile_image") is not None:
-            user.userprofile.profile_image.image_data = data.get("profile_image").read()
-            user.userprofile.profile_image.save()
+        else:
+            if data.get('full_name') != user.userprofile.full_name:
+                user.userprofile.full_name = data.get("full_name")
+                user.userprofile.save()
+
+            if data.get("profile_image") is not None:
+                user.userprofile.profile_image.image_data = data.get("profile_image").read()
+                user.userprofile.profile_image.save()
 
         user.save()

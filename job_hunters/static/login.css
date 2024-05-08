@@ -12,3 +12,22 @@
 .login__card {
     width: 600px;
 }
+
+.login__divider {
+    margin: 0;
+    border: 2px solid var(--color-grey-light);
+    border-radius: 2px;
+}
+
+.login__register {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    padding-top: 32px;
+}
+
+.login__register a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

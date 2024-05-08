@@ -4,23 +4,56 @@
 
 {% block head %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'register.css' %}" />
+    <link rel="stylesheet" href="{% static 'register.css' %}" />
+    <script defer src="{% static 'register.js' %}"></script>
 {% endblock %}
 
 {% block content %}
 <div class="register__container">
     <div class="card">
-        <form method="post" enctype="multipart/form-data" class="register__form">
+        <form method="post" enctype="multipart/form-data" class="register__form" data-user-type="job_seeker">
             {% csrf_token %}
 
             <h2>Create an account</h2>
-
+        
             <div class="form__field">
+                <label for="user_type">Account type</label>
+                <div class="form__select">
+                    <select id="user_type" name="user_type" data-value="job_seeker">
+                        <option value="job_seeker">Job seeker</option>
+                        <option value="company">Company</option>
+                    </select>
+                    <div class="form__select_item form__select_selected" data-user-type="job_seeker"><span>Job seeker</span></div>
+                    <div class="form__select_item" data-user-type="company"><span>Company</span></div>
+                </div>
+                {% if form.user_type.errors %}
+                    <ul class="form__error__list">
+                        {% for error in form.user_type.errors %}
+                            <li class="form__error__item">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            
+            <div class="form__field register__jobseeker">
                 <label for="full_name">Full name</label>
                 <input id="full_name" type="text" name="full_name" placeholder="Full name" class="form__input" value="{{ form.full_name.value }}" />
                 {% if form.full_name.errors %}
                     <ul class="form__error__list">
                         {% for error in form.full_name.errors %}
+                            <li class="form__error__item">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        
+            <div class="form__field register__company">
+                <label for="company_name">Company name</label>
+                <input id="company_name" type="text" name="company_name" placeholder="Company name" class="form__input" value="{{ form.company_name.value }}" />
+                {% if form.company_name.errors %}
+                    <ul class="form__error__list">
+                        {% for error in form.company_name.errors %}
                             <li class="form__error__item">{{ error }}</li>
                         {% endfor %}
                     </ul>
@@ -63,12 +96,24 @@
                 {% endif %}
             </div>
 
-            <div class="form__field">
+            <div class="form__field register__jobseeker">
                 <label for="profile_image">Profile image</label>
-                <input id="profile_image" type="file" name="profile_image" value="{{ form.profile_image.value }}" />
+                <input id="profile_image" type="file" name="profile_image" value="{{ form.profile_image.value }}" class="form__file"/>
                 {% if form.profile_image.errors %}
                     <ul class="form__error__list">
                         {% for error in form.profile_image.errors %}
+                            <li class="form__error__item">{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        
+            <div class="form__field register__company">
+                <label for="company_logo">Company logo</label>
+                <input id="company_logo" type="file" name="company_logo" value="{{ form.company_logo.value }}" class="form__file"/>
+                {% if form.company_logo.errors %}
+                    <ul class="form__error__list">
+                        {% for error in form.company_logo.errors %}
                             <li class="form__error__item">{{ error }}</li>
                         {% endfor %}
                     </ul>
