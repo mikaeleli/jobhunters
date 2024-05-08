@@ -67,7 +67,6 @@ class RegisterForm(forms.Form):
             email=data.get("email"),
             username=data.get("email")
         )
-        print('test');
         if data.get('user_type') == "company":
             company_logo = Image.objects.create(
                 image_data=data.get("company_logo").read(),
