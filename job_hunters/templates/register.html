@@ -98,7 +98,7 @@
 
             <div class="form__field register__jobseeker">
                 <label for="profile_image">Profile image</label>
-                <input id="profile_image" type="file" name="profile_image" value="{{ form.profile_image.value }}" />
+                <input id="profile_image" type="file" name="profile_image" value="{{ form.profile_image.value }}" class="form__file"/>
                 {% if form.profile_image.errors %}
                     <ul class="form__error__list">
                         {% for error in form.profile_image.errors %}
@@ -110,7 +110,7 @@
         
             <div class="form__field register__company">
                 <label for="company_logo">Company logo</label>
-                <input id="company_logo" type="file" name="company_logo" value="{{ form.company_logo.value }}" />
+                <input id="company_logo" type="file" name="company_logo" value="{{ form.company_logo.value }}" class="form__file"/>
                 {% if form.company_logo.errors %}
                     <ul class="form__error__list">
                         {% for error in form.company_logo.errors %}
