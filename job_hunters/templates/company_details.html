@@ -1,0 +1,14 @@
+{% extends "_base.html" %}
+
+{% block title %}Job Hunters - Job Details{% endblock %}
+
+{% block head %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'company.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div>
+    Company: {{ company.name }}
+</div>
+{% endblock %}
