@@ -33,10 +33,18 @@ class RegisterForm(forms.Form):
             if self.files.get("company_logo") is None:
                 self.add_error("company_logo", "Company logo is required")
 
+            # check if company has name
+            if cleaned_data.get("company_name") is None:
+                self.add_error("company_name", "Company name is required")
+
         if cleaned_data.get("user_type") == "job_seeker":
             # check if profile image is uploaded
             if self.files.get("profile_image") is None:
                 self.add_error("profile_image", "Profile image is required")
+
+            # check if full name is added
+            if cleaned_data.get("full_name") is None:
+                self.add_error("full_name", "Full name is required")
 
         # check if email already exists
         if User.objects.filter(email=cleaned_data.get("email")).exists():
