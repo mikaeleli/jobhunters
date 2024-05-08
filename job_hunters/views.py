@@ -84,13 +84,13 @@ def profile_view(request):
 
     if hasattr(request.user, "companyprofile"):
         logo_image = request.user.companyprofile.logo_image
-        cover_image = request.user.companyprofile.cover_image
+        # cover_image = request.user.companyprofile.cover_image
         logo_b64 = b64encode(logo_image.image_data).decode("utf-8")
-        cover_b64 = b64encode(cover_image.image_data).decode("utf-8")
+        # cover_b64 = b64encode(cover_image.image_data).decode("utf-8")
         logo_encoded = f"data:image/png;base64,{logo_b64}"
-        cover_encoded = f"data:image/png;base64,{cover_b64}"
+        # cover_encoded = f"data:image/png;base64,{cover_b64}"
         context["logo_data"] = logo_encoded
-        context["cover_data"] = cover_encoded
+        # context["cover_data"] = cover_encoded
 
     else:
         image = request.user.userprofile.profile_image

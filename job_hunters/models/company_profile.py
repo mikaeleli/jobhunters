@@ -16,15 +16,15 @@ class CompanyProfile(models.Model):
 
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="companyprofile")
-    address = models.CharField(max_length=255)
-    description = models.TextField()
+    address = models.CharField(max_length=255, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     name = models.CharField(max_length=255)
-    webpage_url = models.URLField()
+    webpage_url = models.URLField(blank=True, null=True)
     logo_image = models.OneToOneField(
         Image, on_delete=models.CASCADE, related_name="company_logo"
     )
     cover_image = models.OneToOneField(
-        Image, on_delete=models.CASCADE, related_name="company_cover"
+        Image, on_delete=models.CASCADE, related_name="company_cover", blank=True, null=True
     )
 
     def __str__(self):
