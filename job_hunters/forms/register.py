@@ -34,7 +34,7 @@ class RegisterForm(forms.Form):
                 self.add_error("company_logo", "Company logo is required")
 
             # check if company has name
-            if cleaned_data.get("company_name") is None:
+            if cleaned_data.get("company_name") == "":
                 self.add_error("company_name", "Company name is required")
 
         if cleaned_data.get("user_type") == "job_seeker":
@@ -43,7 +43,7 @@ class RegisterForm(forms.Form):
                 self.add_error("profile_image", "Profile image is required")
 
             # check if full name is added
-            if cleaned_data.get("full_name") is None:
+            if cleaned_data.get("full_name") == "":
                 self.add_error("full_name", "Full name is required")
 
         # check if email already exists
