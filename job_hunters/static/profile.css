@@ -20,14 +20,21 @@
 }
 
 .profile__company-cover .profile__company-cover-logo {
+    position: relative;
+    width: 100%;
     display: flex;
-    flex-shrink: inherit;
+    justify-content: center;
+    transform: translateY(-96px);
 }
 
 .profile__company-cover .profile__company-cover-logo img {
     border: 2px solid var(--color-primary);
-    width: 20%;
+    width: 192px;
     aspect-ratio: 1;
+}
+
+.profile__company-form {
+    transform: translateY(-96px);
 }
 
 .profile__image-card {
