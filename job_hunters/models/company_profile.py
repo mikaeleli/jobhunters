@@ -15,7 +15,7 @@ class CompanyProfile(models.Model):
     """
 
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="companyprofile")
     address = models.CharField(max_length=255)
     description = models.TextField()
     name = models.CharField(max_length=255)
