@@ -6,6 +6,7 @@ const selectAccountType = (event, el) => {
     el.parentNode.childNodes.forEach((child) => {
         if (child.tagName && child.tagName === 'SELECT') {
             child.value = el.dataset.userType;
+            registerForm.dataset.userType = el.dataset.userType;
         }
         if (child.classList && child.classList.contains('form__select_selected')) {
             child.classList.remove('form__select_selected');
