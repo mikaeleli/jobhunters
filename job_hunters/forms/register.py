@@ -16,7 +16,7 @@ class RegisterForm(forms.Form):
     Form for the register page.
     """
 
-    user_type = forms.ChoiceField(widget=forms.Select(), choices=([('jobseeker', 'jobseeker'), ('company', 'company')]))
+    user_type = forms.ChoiceField(widget=forms.Select(), choices=([('job_seeker', 'job_seeker'), ('company', 'company')]))
     full_name = forms.CharField(max_length=255, initial="", required=False)
     company_name = forms.CharField(max_length=255, initial="", required=False)
     email = forms.EmailField(initial="")
@@ -33,7 +33,7 @@ class RegisterForm(forms.Form):
             if self.files.get("company_logo") is None:
                 self.add_error("company_logo", "Company logo is required")
 
-        if cleaned_data.get("user_type") == "jobseeker":
+        if cleaned_data.get("user_type") == "job_seeker":
             # check if profile image is uploaded
             if self.files.get("profile_image") is None:
                 self.add_error("profile_image", "Profile image is required")
@@ -73,7 +73,7 @@ class RegisterForm(forms.Form):
             user.save()
             return company_profile
 
-        elif data.get('user_type') == "jobseeker":
+        elif data.get('user_type') == "job_seeker":
             print('jobseeker')
             profile_image = Image.objects.create(
                 image_data=data.get("profile_image").read(),
