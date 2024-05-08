@@ -18,7 +18,7 @@
             {% csrf_token %}
 
             <h2>My profile</h2>
-            
+
             <div class="form__field">
                 <label for="full_name">Full name</label>
                 <input id="full_name" type="text" name="full_name" placeholder="Full name" class="form__input" value="{{ user.userprofile.full_name }}" />
@@ -33,7 +33,7 @@
 
             <div class="form__field">
                 <label for="profile_image">Profile image</label>
-                <input id="profile_image" type="file" name="profile_image" value="{{ form.profile_image.value }}" />
+                <input id="profile_image" type="file" name="profile_image" value="{{ form.profile_image.value }}" class="form__file"/>
                 {% if form.profile_image.errors %}
                     <ul class="form__error__list">
                         {% for error in form.profile_image.errors %}

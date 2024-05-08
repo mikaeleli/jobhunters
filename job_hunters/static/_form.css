@@ -17,6 +17,21 @@
     }
 }
 
+.form__file {
+    background: #FFF;
+    border: 2px solid var(--color-primary);
+    border-radius: 8px;
+    color: var(--color-primary);
+    font-size: 16px;
+}
+
+.form__file::file-selector-button {
+    height: 44px;
+    background: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    color: #FFF;
+}
+
 .form__select {
     position: relative;
     display: flex;
