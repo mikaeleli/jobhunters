@@ -159,6 +159,36 @@ def jobs_view(request):
     return render(request, "jobs.html", {"jobs": jobs, "form": form})
 
 
+def job_view(request, job_id):
+    """
+    View for the job page.
+    """
+
+    job = Job.objects.get(id=job_id)
+
+    return render(request, "job_details.html", {"job": job})
+
+
+def job_apply_view(request, job_id):
+    """
+    View for the job apply page.
+    """
+
+    # TODO: Implement job application logic.
+
+    return redirect("jobs")
+
+
+def company_details_view(request, company_name):
+    """
+    View for the company details page.
+    """
+
+    company = CompanyProfile.objects.get(name=company_name)
+
+    return render(request, "company_details.html", {"company": company})
+
+
 def applications_view(request):
     """
     View for the applications page.

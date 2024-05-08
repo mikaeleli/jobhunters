@@ -1,0 +1,60 @@
+{% extends "_base.html" %}
+
+{% block title %}Job Hunters - Job Details{% endblock %}
+
+{% block head %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'job_details.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="job_details__container">
+    <div class="card job_details__company_details">
+        <h4 class="job_details__company__title">{{ job.offered_by.name }}</h4>
+        <p class="job_details__company__subtitle">{{ job.offered_by.address }}</p>
+        <p class="job_details__company__description">{{ job.description }}</p>
+        <a href="{% url 'company' company_name=job.offered_by.name %}" class="job_details__company__link">
+            More about company
+        </a>
+    </div>
+
+    <div class="card job_details__card">
+        <h3>{{ job.title }}</h3>
+
+        <div class="job_details__grid">
+            <p class="job_details__grid__header">Type</p>
+            <p>
+                {% if job.is_part_time %}
+                Part
+                {% else %}
+                Full
+                {% endif %}
+                time position
+            </p>
+
+            <p class="job_details__grid__header">Location</p>
+            <p>{{ job.offered_by.address }}</p>
+
+            <p class="job_details__grid__header">Category</p>
+            <p>
+                {% for category in job.categories.all %}
+                    {{ category.name }}
+                {% endfor %}
+            </p>
+
+            <p class="job_details__grid__header">Due date</p>
+            <p>{{ job.due_date|date:"M jS Y" }}</p>
+
+            <p class="job_details__grid__header">Starting date</p>
+            <p>{{ job.starting_date|date:"M jS Y" }}</p>
+
+            <p class="job_details__grid__header">Description</p>
+            <p>{{ job.description }}</p>
+        <div/>
+
+        <a href="{% url 'job_apply' job_id=job.id %}" class="job_details__apply_button">
+            Apply for this job
+        </a>
+    </div>
+</div>
+{% endblock %}
