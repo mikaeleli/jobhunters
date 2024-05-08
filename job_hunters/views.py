@@ -31,7 +31,6 @@ def register_view(request):
 
     if request.method == "POST":
         form = RegisterForm(request.POST, request.FILES)
-
         if form.is_valid():
             form.save()
         else:
