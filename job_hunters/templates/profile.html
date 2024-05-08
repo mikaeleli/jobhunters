@@ -11,7 +11,7 @@
 <div class="profile__container profile__container-{% if userprofile %}userprofile{% endif %}{% if companyprofile %}companyprofile{% endif %}">
     {% if userprofile %}
         <div class="profile__image-card">
-            <img src="{{ image_data }}" height="100%" width="100%" />
+            <img src="{{ image_data }}" alt="profile picture" height="100%" width="100%" />
         </div>
 
         <div class="card profile__card">
@@ -55,21 +55,70 @@
             <div class="profile__company-cover">
                 <div class="profile__company-cover-image">
                 {% if cover_data %}
-                    <img src="{{ cover_data }}" height="100%" width="100%" />
+                    <img src="{{ cover_data }}" alt="company cover image" height="100%" width="100%" />
                 {% else %}
-                    <img src="{%  static 'profile_cover_placeholder.jpg' %}" height="100%" width="100%" />
+                    <img src="{%  static 'profile_cover_placeholder.jpg' %}" alt="default company cover image" height="100%" width="100%" />
                 {% endif %}
                 </div>
                 <div class="profile__company-cover-logo">
-                    <img src="{{ logo_data }}" height="100%" width="100%" />
+                    <img src="{{ logo_data }}" alt="company logo" height="100%" width="100%" />
                 </div>
             </div>
             <div class="profile__company-form">
                 <form method="post" enctype="multipart/form-data" class="profile__form">
                     {% csrf_token %}
 
-                        <h2>Company profile</h2>
-                    <button type="submit">
+                    <h2 class="profile__company-form__full_column">Company profile</h2>
+                
+                    <div class="form__field">
+                        <label for="full_name">Full name</label>
+                        <input id="full_name" type="text" name="full_name" placeholder="Full name" class="form__input" value="{{ user.userprofile.full_name }}" />
+                        {% if form.full_name.errors %}
+                            <ul class="form__error__list">
+                                {% for error in form.full_name.errors %}
+                                    <li class="form__error__item">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                
+                    <div class="form__field">
+                        <label for="full_name">Full name</label>
+                        <input id="full_name" type="text" name="full_name" placeholder="Full name" class="form__input" value="{{ user.userprofile.full_name }}" />
+                        {% if form.full_name.errors %}
+                            <ul class="form__error__list">
+                                {% for error in form.full_name.errors %}
+                                    <li class="form__error__item">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+
+                    <div class="form__field profile__company-form__half_column">
+                        <label for="profile_image">Company logo</label>
+                        <input id="profile_image" type="file" name="profile_image" value="{{ form.profile_image.value }}" class="form__file"/>
+                        {% if form.profile_image.errors %}
+                            <ul class="form__error__list">
+                                {% for error in form.profile_image.errors %}
+                                    <li class="form__error__item">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                
+                    <div class="form__field profile__company-form__half_column">
+                        <label for="profile_image">Company logo</label>
+                        <input id="profile_image" type="file" name="profile_image" value="{{ form.profile_image.value }}" class="form__file"/>
+                        {% if form.profile_image.errors %}
+                            <ul class="form__error__list">
+                                {% for error in form.profile_image.errors %}
+                                    <li class="form__error__item">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+
+                    <button type="submit" class="profile__company-form__half_column">
                         Save profile
                     </button>
                 </form>
