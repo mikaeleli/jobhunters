@@ -221,18 +221,18 @@ def company_details_view(request, company_name):
     """
     company_name = company_name.replace("_", " ")
     company = CompanyProfile.objects.filter(name__iexact=company_name).first()
-    company_jobs = Job.objects.filter(offered_by=request.user.companyprofile, due_date__gte=datetime.date.today())
+    company_jobs = Job.objects.filter(offered_by=company, due_date__gte=datetime.date.today())
 
     context = {
         "company": company,
         "company_jobs": company_jobs,
     }
 
-    logo_image = request.user.companyprofile.logo_image
+    logo_image = company.logo_image
     logo_b64 = b64encode(logo_image.image_data).decode("utf-8")
     logo_encoded = f"data:image/png;base64,{logo_b64}"
-    if request.user.companyprofile.cover_image is not None:
-        cover_image = request.user.companyprofile.cover_image
+    if company.cover_image is not None:
+        cover_image = company.cover_image
         cover_b64 = b64encode(cover_image.image_data).decode("utf-8")
         cover_encoded = f"data:image/png;base64,{cover_b64}"
         context["cover_data"] = cover_encoded

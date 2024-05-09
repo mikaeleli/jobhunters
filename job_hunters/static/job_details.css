@@ -23,7 +23,13 @@
 }
 
 .job_details__company__description {
-    font-size: 14px;
+    font-size: 16px;
+}
+
+.job_details__company__description ul {
+    list-style-type: unset;
+    padding: 16px;
+    margin: 16px;
 }
 
 .job_details__company__link {

@@ -91,6 +91,12 @@
     font-size: 16px;
 }
 
+.company__company-description ul {
+    list-style-type: unset;
+    padding: 16px;
+    margin: 16px;
+}
+
 .company__card .company__website {
     display: flex;
     flex-direction: column;
