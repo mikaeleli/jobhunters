@@ -11,13 +11,17 @@
     flex-direction: row;
 }
 
+.checkbox__label input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
+}
+
 .form__input {
     height: 48px;
     border: 2px solid black;
     border-radius: 8px;
     padding: 0 16px;
     font-size: 16px;
-    resize: vertical;
 
     &:focus {
         outline: none;
@@ -25,9 +29,27 @@
     }
 }
 
+.form__input[type="date"] {
+    resize: none;
+}
+
 textarea.form__input {
     padding: 16px;
-    min-height: calc(16px * 20)
+    min-height: calc(16px * 20);
+    resize: vertical;
+}
+
+.form__select__multi {
+    height: 100%;
+    padding: 0;
+}
+
+.form__select__multi option {
+    padding: 16px;
+}
+
+.form__select__multi option:checked, .form__select__multi option:active:checked, .form__select__multi option:focus:checked  {
+    background: var(--color-primary-light);
 }
 
 .form__file {
@@ -88,6 +110,64 @@ textarea.form__input {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
+
+.form__toggle__checkbox {
+    display: none;
+}
+
+.form__toggle__container {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: fit-content;
+    border: 2px solid var(--color-primary);
+    border-radius: 8px;
+    background: var(--color-primary);
+    font-weight: 400;
+    color: var(--color-primary);
+    cursor: pointer;
+ }
+
+ .form__toggle__container::before {
+   content: '';
+   position: absolute;
+   width: 50%;
+   height: 100%;
+   left: 0%;
+   border-radius:6px;
+   background: white;
+   transition: all 0.3s;
+ }
+
+ .form__toggle__checkbox:checked + .form__toggle__container::before {
+    left: 50%;
+ }
+
+ .form__toggle__container div {
+   padding: 16px;
+   text-align: center;
+   z-index: 1;
+ }
+
+ .form__toggle__checkbox:checked + .form__toggle__container div:first-child{
+   color: white;
+   transition: color 0.3s;
+ }
+
+ .form__toggle__checkbox:checked + .form__toggle__container div:last-child{
+   color: var(--color-primary);
+   transition: color 0.3s;
+ }
+
+ .form__toggle__checkbox + .form__toggle__container div:first-child{
+   color: var(--color-primary);
+   transition: color 0.3s;
+ }
+
+ .form__toggle__checkbox + .form__toggle__container div:last-child{
+   color: white;
+   transition: color 0.3s;
+ }
 
 .form__error__list {
     display: flex;

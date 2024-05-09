@@ -1,0 +1,122 @@
+{% extends "_base.html" %}
+
+{% block title %}Job Hunters - Post a new job{% endblock %}
+
+{% block head %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'job_create.css' %}" />
+    <link rel="stylesheet" href="{% static 'company.css' %}" />
+    <script defer src="{% static 'job_create.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="job_create__container">
+    <div class="card job_create__card">
+        <div class="job_create__job-form">
+            <form method="post" enctype="multipart/form-data" class="job_create__form">
+                {% csrf_token %}
+
+                <h2 class="job_create__job-form-full-row">New job listing</h2>
+
+                <div class="form__field">
+                    <label for="job_title">Job title</label>
+                    <input id="job_title" type="text" name="job_title" placeholder="Job title" class="form__input" value="{{ form.job_title.value |default_if_none:"" }}" />
+                    {% if form.job_title.errors %}
+                        <ul class="form__error__list">
+                            {% for error in form.job_title.errors %}
+                                <li class="form__error__item">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <div class="form__field job_category">
+                    <label for="job_category">Job category</label>
+                    <select id="job_category" name="job_category" class="form__input form__select__multi" multiple>
+                        {% if form.job_category %}
+                            {% for category in form.job_category %}
+                                {{ category }}
+                            {% endfor %}
+                        {% else %}
+                            {% for category in job_categories %}
+                            <option value="{{ category.id }}" >{{ category.name }}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
+                    {% if form.job_category.errors %}
+                        <ul class="form__error__list">
+                            {% for error in form.job_category.errors %}
+                                <li class="form__error__item">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <div class="form__field">
+                    <label for="job_due_date">Application deadline</label>
+                    <input id="job_due_date" type="date" name="job_due_date" placeholder="Application deadline" class="form__input" value="{{ form.job_due_date.value |default_if_none:"" }}" />
+                    {% if form.job_due_date.errors %}
+                        <ul class="form__error__list">
+                            {% for error in form.job_due_date.errors %}
+                                <li class="form__error__item">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <div class="form__field">
+                    <label for="job_start_date">Start date</label>
+                    <input id="job_start_date" type="date" name="job_start_date" class="form__input" value="{{ form.job_start_date.value |default_if_none:"" }}" />
+                    {% if form.job_start_date.errors %}
+                        <ul class="form__error__list">
+                            {% for error in form.job_start_date.errors %}
+                                <li class="form__error__item">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <div class="form__field">
+                    <label for="job_is_part_time">Job hours</label>
+                    <input id="job_is_part_time" type="checkbox" name="job_is_part_time" class="form__input form__toggle__checkbox" {% if form.job_is_part_time.checked %}checked{% endif %} />
+                    <div class="form__toggle__container" data-toggle-target="job_is_part_time">
+                        <div>Full time</div>
+                        <div>Part time</div>
+                    </div>
+                    {% if form.job_is_part_time.errors %}
+                        <ul class="form__error__list">
+                            {% for error in form.job_is_part_time.errors %}
+                                <li class="form__error__item">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <div class="form__field job_create__job-form-description">
+                    <label for="job_description">Description</label>
+                    <textarea id="job_description" name="job_description" placeholder="Description" class="form__input"></textarea>
+                    {% if form.job_description.errors %}
+                        <ul class="form__error__list">
+                            {% for error in form.job_description.errors %}
+                                <li class="form__error__item">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="">
+                    Post job
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="card company__card company__job-listings">
+        <h4>My open listings</h4>
+        {% for job in company_jobs %}
+            <a href="{{ job.get_absolute_url }}" class="company__job-listing">{{ job.title }} <i class="fa-solid fa-link"></i> </a>
+        {% empty %}
+            <span>No listings found</span>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

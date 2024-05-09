@@ -1,12 +1,13 @@
 """
 This file contains the views for the job_hunters app.
 """
-
+import datetime
 from base64 import b64encode
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout, authenticate, login
 
+from job_hunters.forms.job_create import JobForm
 from job_hunters.forms.jobs_filter import JobsFilter
 from job_hunters.forms.login import LoginForm
 from job_hunters.forms.profile import ProfileForm
@@ -99,6 +100,7 @@ def profile_view(request):
             context["cover_data"] = cover_encoded
 
         context["logo_data"] = logo_encoded
+        context["company_jobs"] = Job.objects.filter(offered_by=request.user.companyprofile, due_date__gte=datetime.date.today())
         context["companyprofile"] = True
 
     else:
@@ -125,6 +127,9 @@ def jobs_view(request):
     """
     View for the jobs page.
     """
+    user_is_company = False
+    if request.user.is_authenticated and hasattr(request.user, "companyprofile"):
+        user_is_company = True
 
     categories = Category.objects.all()
     companies = CompanyProfile.objects.all()
@@ -166,7 +171,7 @@ def jobs_view(request):
     form = JobsFilter(categories=categories, companies=companies)
     jobs = Job.objects.all()
 
-    return render(request, "jobs.html", {"jobs": jobs, "form": form})
+    return render(request, "jobs.html", {"jobs": jobs, "form": form, "user_is_company": user_is_company})
 
 
 def job_view(request, job_id):
@@ -188,6 +193,27 @@ def job_apply_view(request, job_id):
 
     return redirect("jobs")
 
+def job_create_view(request):
+    """
+    View for the job create page.
+    """
+
+    company_jobs = Job.objects.filter(offered_by=request.user.companyprofile, due_date__gte=datetime.date.today())
+    if request.method == "POST" and request.user.is_authenticated and hasattr(request.user, "companyprofile"):
+        form = JobForm(request.POST, user=request.user)
+
+        if form.is_valid():
+            form.save()
+            return redirect("jobs")
+
+        return render(request, "job_create.html", {"company": request.user.companyprofile, "job_categories": Category.objects.all(), "company_jobs": company_jobs, "form": form})
+
+    if request.user.is_authenticated and hasattr(request.user, "companyprofile"):
+        return render(request, "job_create.html", {"company": request.user.companyprofile, "job_categories": Category.objects.all(), "company_jobs": company_jobs})
+
+    return redirect("jobs")
+
+
 
 def company_details_view(request, company_name):
     """
@@ -195,7 +221,7 @@ def company_details_view(request, company_name):
     """
     company_name = company_name.replace("_", " ")
     company = CompanyProfile.objects.filter(name__iexact=company_name).first()
-    company_jobs = Job.objects.filter(offered_by=company)
+    company_jobs = Job.objects.filter(offered_by=request.user.companyprofile, due_date__gte=datetime.date.today())
 
     context = {
         "company": company,
