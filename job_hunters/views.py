@@ -195,9 +195,11 @@ def company_details_view(request, company_name):
     """
     company_name = company_name.replace("_", " ")
     company = CompanyProfile.objects.filter(name__iexact=company_name).first()
+    company_jobs = Job.objects.filter(offered_by=company)
 
     context = {
         "company": company,
+        "company_jobs": company_jobs,
     }
 
     logo_image = request.user.companyprofile.logo_image
@@ -210,7 +212,6 @@ def company_details_view(request, company_name):
         context["cover_data"] = cover_encoded
 
     context["logo_data"] = logo_encoded
-
 
     if not company:
         raise Http404("Company not found")

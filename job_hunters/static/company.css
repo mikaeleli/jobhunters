@@ -108,3 +108,19 @@
 .company__website:link, .company__website:visited, .company__website:hover, .company__website:active  {
     text-decoration: none;
 }
+
+.company__job-listings h4 {
+    font-weight: 700;
+    font-size: 24px;
+}
+
+.company__job-listing {
+    font-weight: 600;
+    padding: 16px 0;
+    color: var(--color-info);
+}
+
+.company__job-listing:link, .company__job-listing:visited, .company__job-listing:hover, .company__job-listing:active  {
+    text-decoration: none;
+    color: var(--color-info);
+}

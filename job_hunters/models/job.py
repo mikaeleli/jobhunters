@@ -5,6 +5,7 @@ Job
 import datetime
 import uuid
 from django.db import models
+from django.urls import reverse
 
 from .company_profile import CompanyProfile
 from .category import Category
@@ -31,6 +32,9 @@ class Job(models.Model):
         Category,
         related_name="jobs",
     )
+
+    def get_absolute_url(self):
+        return reverse("job",args=[str(self.id),])
 
     def __str__(self):
         return str(self.title)
