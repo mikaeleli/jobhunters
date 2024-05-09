@@ -1,0 +1,110 @@
+.company__container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 64px;
+    width: 100%;
+}
+
+.company__container-companyprofile {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.company__container-companyprofile .company__card:nth-child(1) {
+    grid-column: span 3;
+}
+
+.company__container-companyprofile .company__card:nth-child(2) {
+    grid-row-start: 1;
+    grid-column: span 2;
+}
+
+@media screen and (min-width: 768px) {
+    .company__container-companyprofile .company__card:nth-child(2) {
+        grid-column: span 2 / end;
+    }
+}
+
+.company__company-cover {
+    max-height: calc(35ch + 104px);
+}
+
+.company__company-cover-image img {
+    max-height: 35ch;
+    object-fit: cover;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.company__company-cover .company__company-cover-logo {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    transform: translateY(-96px);
+
+}
+
+.company__company-cover .company__company-cover-logo img {
+    border: 2px solid var(--color-primary);
+    border-radius: 16px;
+    width: 192px;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
+
+.company__company-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start
+}
+
+.company__image-card {
+    border-radius: 32px;
+    box-shadow: var(--box-shadow);
+    aspect-ratio: 1;
+    overflow: hidden;
+}
+
+.company__image-card img {
+    object-fit: cover;
+}
+
+.company__card {
+    display: flex;
+    flex-direction: column;
+}
+
+.company__card .company__company-details > h1 {
+    padding: 16px 16px;
+}
+
+.company__card .company__company-details > * {
+    padding: 16px 16px;
+}
+
+.company__card .company__company-details > * i {
+    margin-right: 16px;
+}
+
+.company__card .company__company-address {
+    font-size: 16px;
+}
+
+.company__card .company__website {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 48px;
+    background: var(--color-secondary);
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+    text-align: center;
+    padding: 16px;
+}
+
+.company__website:link, .company__website:visited, .company__website:hover, .company__website:active  {
+    text-decoration: none;
+}

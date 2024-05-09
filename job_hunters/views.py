@@ -3,6 +3,7 @@ This file contains the views for the job_hunters app.
 """
 
 from base64 import b64encode
+from django.http import Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout, authenticate, login
 
@@ -192,10 +193,29 @@ def company_details_view(request, company_name):
     """
     View for the company details page.
     """
+    company_name = company_name.replace("_", " ")
+    company = CompanyProfile.objects.filter(name__iexact=company_name).first()
 
-    company = CompanyProfile.objects.get(name=company_name)
+    context = {
+        "company": company,
+    }
 
-    return render(request, "company_details.html", {"company": company})
+    logo_image = request.user.companyprofile.logo_image
+    logo_b64 = b64encode(logo_image.image_data).decode("utf-8")
+    logo_encoded = f"data:image/png;base64,{logo_b64}"
+    if request.user.companyprofile.cover_image is not None:
+        cover_image = request.user.companyprofile.cover_image
+        cover_b64 = b64encode(cover_image.image_data).decode("utf-8")
+        cover_encoded = f"data:image/png;base64,{cover_b64}"
+        context["cover_data"] = cover_encoded
+
+    context["logo_data"] = logo_encoded
+
+
+    if not company:
+        raise Http404("Company not found")
+
+    return render(request, "company_details.html", context)
 
 
 def applications_view(request):
@@ -206,3 +226,11 @@ def applications_view(request):
     applications = request.user.applications.all()
 
     return render(request, "applications.html", {"applications": applications})
+
+def handler404(request, exception, template_name="404.html"):
+    response = render(request, template_name, exception)
+    response.status_code = 404
+    return response
+
+def handler500(request, *args, **argv):
+    return render(request, '500.html', status=500)
