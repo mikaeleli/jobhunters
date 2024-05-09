@@ -164,9 +164,9 @@ def jobs_view(request):
             if order_by:
                 jobs = jobs.order_by(order_by)
 
-            return render(request, "jobs.html", {"jobs": jobs, "form": form})
+            return render(request, "jobs.html", {"jobs": jobs, "form": form, "user_is_company": user_is_company})
 
-        return render(request, "jobs.html", {"jobs": jobs, "form": form})
+        return render(request, "jobs.html", {"jobs": jobs, "form": form, "user_is_company": user_is_company})
 
     form = JobsFilter(categories=categories, companies=companies)
     jobs = Job.objects.all()
