@@ -12,9 +12,10 @@ const now_date_input = toDateInputValue(now);
 const in_one_week = new Date(new Date().setDate(now.getDate() + 7));
 const in_one_week_date_input =  toDateInputValue(in_one_week)
 datePickers.find(el => el.id === 'job_due_date').value = in_one_week_date_input;
-datePickers.find(el => el.id === 'job_due_date').value = in_one_week_date_input;
+datePickers.find(el => el.id === 'job_due_date').min = now_date_input;
 
 datePickers.find(el => el.id === 'job_starting_date').value = in_one_week_date_input;
+datePickers.find(el => el.id === 'job_starting_date').min = now_date_input;
 
 
 // const selectAccountType = (event, el) => {

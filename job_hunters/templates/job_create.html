@@ -40,10 +40,14 @@
                         </ul>
                     {% endif %}
                 </div>
-
+            
                 <div class="form__field">
                     <label for="job_category">Job category</label>
-                    <input id="job_category" type="text" name="job_category" placeholder="Job category" class="form__input" value="" />
+                    <select id="job_category" name="job_category" class="form__input">
+                        <option></option>
+                        {% for category in job_categories %}
+                        <option value="{{ category.name }}" {% if form.category.value == category.name %}selected{% endif %} >{{ category.name }}</option>
+                        {% endfor %}
                     {% if form.job_category.errors %}
                         <ul class="form__error__list">
                             {% for error in form.job_category.errors %}
@@ -51,6 +55,7 @@
                             {% endfor %}
                         </ul>
                     {% endif %}
+                    </select>
                 </div>
 
                 <div class="form__field">

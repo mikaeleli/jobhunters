@@ -22,7 +22,6 @@
     border-radius: 8px;
     padding: 0 16px;
     font-size: 16px;
-    resize: vertical;
 
     &:focus {
         outline: none;
@@ -30,9 +29,14 @@
     }
 }
 
+.form__input[type="date"] {
+    resize: none;
+}
+
 textarea.form__input {
     padding: 16px;
-    min-height: calc(16px * 20)
+    min-height: calc(16px * 20);
+    resize: vertical;
 }
 
 .form__file {

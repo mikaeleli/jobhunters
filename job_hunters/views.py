@@ -197,7 +197,7 @@ def job_create_view(request):
     """
 
     if request.user.is_authenticated and hasattr(request.user, "companyprofile"):
-        return render(request, "job_create.html", {"company": request.user.companyprofile})
+        return render(request, "job_create.html", {"company": request.user.companyprofile, "job_categories": Category.objects.all()})
 
     return redirect("jobs")
 
