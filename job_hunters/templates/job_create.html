@@ -1,10 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "_base.html" %}
 
-</body>
-</html>
+{% block title %}Job Hunters - Post a new job{% endblock %}
+
+{% block head %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'job_create.css' %}" />
+    <script defer src="{% static 'job_create.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="job_create__container">
+    <div class="card job_create__card">
+{#        <div class="job_create__company-cover">#}
+{#            <div class="job_create__company-cover-image">#}
+{#            {% if cover_data %}#}
+{#                <img src="{{ cover_data }}" alt="company cover image" height="100%" width="100%" />#}
+{#            {% else %}#}
+{#                <img src="{%  static 'profile_cover_placeholder.jpg' %}" alt="default company cover image" height="100%" width="100%" />#}
+{#            {% endif %}#}
+{#            </div>#}
+{#            <div class="job_create__company-cover-logo">#}
+{#                <img src="{{ logo_data }}" alt="company logo" height="100%" width="100%" />#}
+{#            </div>#}
+{#        </div>#}
+        <div class="job_create__job-form">
+            <form method="post" enctype="multipart/form-data" class="job_create__form">
+                {% csrf_token %}
+
+                <h2 class="job_create__job-form-full-row">New job listing</h2>
+
+                <div class="form__field">
+                    <label for="job_title">Job title</label>
+                    <input id="job_title" type="text" name="job_title" placeholder="Job title" class="form__input" value="" />
+                    {% if form.job_title.errors %}
+                        <ul class="form__error__list">
+                            {% for error in form.job_title.errors %}
+                                <li class="form__error__item">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <div class="form__field">
+                    <label for="job_category">Job category</label>
+                    <input id="job_category" type="text" name="job_category" placeholder="Job category" class="form__input" value="" />
+                    {% if form.job_category.errors %}
+                        <ul class="form__error__list">
+                            {% for error in form.job_category.errors %}
+                                <li class="form__error__item">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <div class="form__field">
+                    <label for="job_due_date">Application deadline</label>
+                    <input id="job_due_date" type="date" name="job_due_date" placeholder="Application deadline" class="form__input" value="" />
+                    {% if form.job_due_date.errors %}
+                        <ul class="form__error__list">
+                            {% for error in form.job_due_date.errors %}
+                                <li class="form__error__item">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <div class="form__field">
+                    <label for="job_starting_date">Start date</label>
+                    <input id="job_starting_date" type="date" name="job_starting_date" class="form__input" value="" />
+                    {% if form.job_starting_date.errors %}
+                        <ul class="form__error__list">
+                            {% for error in form.job_starting_date.errors %}
+                                <li class="form__error__item">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <div class="form__field job_create__job-form-description">
+                    <label for="job_description">Description</label>
+                    <textarea id="job_description" name="job_description" placeholder="Description" class="form__input"></textarea>
+                    {% if form.job_description.errors %}
+                        <ul class="form__error__list">
+                            {% for error in form.job_description.errors %}
+                                <li class="form__error__item">{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="">
+                    Save profile
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="card job_create__card">
+        <span>bingo</span>
+    </div>
+</div>
+{% endblock %}

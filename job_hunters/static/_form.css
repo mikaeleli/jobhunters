@@ -11,6 +11,11 @@
     flex-direction: row;
 }
 
+.checkbox__label input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
+}
+
 .form__input {
     height: 48px;
     border: 2px solid black;

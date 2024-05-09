@@ -46,6 +46,13 @@
     font-weight: 500;
 }
 
+.jobs__create__link__container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
 .jobs__item__action__container {
     display: flex;
     flex-direction: row;
@@ -67,7 +74,7 @@
     align-items: center;
 }
 
-.jobs__item__link {
+.jobs__item__link, .jobs__create__link {
     background: var(--color-primary);
     color: #fff;
     height: 48px;

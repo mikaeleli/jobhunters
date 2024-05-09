@@ -1,0 +1,108 @@
+.job_create__container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 64px;
+    width: 100%;
+}
+
+.job_create__container {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.job_create__container .job_create__card:nth-child(1) {
+    grid-column: span 3;
+}
+
+.job_create__container .job_create__card:nth-child(2) {
+    grid-row-start: 1;
+    grid-column: span 2;
+}
+
+@media screen and (min-width: 768px) {
+    .job_create__container .job_create__card:nth-child(2) {
+        grid-column: span 2 / end;
+    }
+}
+
+.job_create__company-cover {
+    max-height: calc(35ch + 104px);
+}
+
+.job_create__company-cover-image img {
+    max-height: 35ch;
+    object-fit: cover;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.job_create__company-cover .job_create__company-cover-logo {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    transform: translateY(-96px);
+
+}
+
+.job_create__company-cover .job_create__company-cover-logo img {
+    border: 2px solid var(--color-primary);
+    border-radius: 16px;
+    width: 192px;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
+
+.job_create__job-form .job_create__form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.job_create__job-form .job_create__form .form__field {
+    grid-column: span 2;
+}
+
+.job_create__job-form .job_create__form button[type="submit"] {
+    grid-column-start: 1;
+}
+
+@media screen and (min-width: 768px) {
+    .job_create__job-form .job_create__form .form__field {
+        grid-column: span 2;
+    }
+
+    .job_create__job-form .job_create__job-form-description.form__field {
+        grid-column: span 4;
+    }
+}
+
+.job_create__job-form-description .form__input {
+
+}
+
+.job_create__job-form .job_create__job-form-full-row {
+    grid-column: 1 / -1;
+}
+
+.job_create__image-card {
+    border-radius: 32px;
+    box-shadow: var(--box-shadow);
+    aspect-ratio: 1;
+    overflow: hidden;
+}
+
+.job_create__image-card img {
+    object-fit: cover;
+}
+
+.job_create__card {
+    display: flex;
+    flex-direction: column;
+}
+
+.job_create__form {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    width: 100%;
+}

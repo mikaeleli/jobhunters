@@ -125,6 +125,9 @@ def jobs_view(request):
     """
     View for the jobs page.
     """
+    user_is_company = False
+    if request.user.is_authenticated and hasattr(request.user, "companyprofile"):
+        user_is_company = True
 
     categories = Category.objects.all()
     companies = CompanyProfile.objects.all()
@@ -166,7 +169,7 @@ def jobs_view(request):
     form = JobsFilter(categories=categories, companies=companies)
     jobs = Job.objects.all()
 
-    return render(request, "jobs.html", {"jobs": jobs, "form": form})
+    return render(request, "jobs.html", {"jobs": jobs, "form": form, "user_is_company": user_is_company})
 
 
 def job_view(request, job_id):
@@ -187,6 +190,17 @@ def job_apply_view(request, job_id):
     # TODO: Implement job application logic.
 
     return redirect("jobs")
+
+def job_create_view(request):
+    """
+    View for the job create page.
+    """
+
+    if request.user.is_authenticated and hasattr(request.user, "companyprofile"):
+        return render(request, "job_create.html", {"company": request.user.companyprofile})
+
+    return redirect("jobs")
+
 
 
 def company_details_view(request, company_name):
