@@ -5,6 +5,7 @@ Company profile
 import uuid
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 from .image import Image
 
@@ -32,6 +33,10 @@ class CompanyProfile(models.Model):
         blank=True,
         null=True,
     )
+
+    def get_absolute_url(self):
+        purdylink = self.name.lower().replace(" ", "_").strip()
+        return reverse("company", args=[str(purdylink),])
 
     def __str__(self):
         return str(self.name)

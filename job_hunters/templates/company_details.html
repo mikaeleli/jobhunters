@@ -1,6 +1,6 @@
 {% extends "_base.html" %}
 
-{% block title %}Job Hunters - Job Details{% endblock %}
+{% block title %}Job Hunters - {{ company.name }}{% endblock %}
 
 {% block head %}
 {% load static %}
@@ -8,7 +8,36 @@
 {% endblock %}
 
 {% block content %}
-<div>
-    Company: {{ company.name }}
+<div class="company__container company__container-companyprofile">
+        <div class="card company__card">
+            <div class="company__company-cover">
+                <div class="company__company-cover-image">
+                {% if cover_data %}
+                    <img src="{{ cover_data }}" alt="company cover image" height="100%" width="100%" />
+                {% else %}
+                    <img src="{%  static 'profile_cover_placeholder.jpg' %}" alt="default company cover image" height="100%" width="100%" />
+                {% endif %}
+                </div>
+                <div class="company__company-cover-logo">
+                    <img src="{{ logo_data }}" alt="company logo" height="100%" width="100%" />
+                </div>
+            </div>
+            <div class="company__company-details">
+                    <h1 class="company__company-details-full-row">{{ company.name }}</h1>
+                    <p class="company__company-address"><i class="fa-solid fa-location-dot"></i> {{ company.address }}</p>
+                    <div class="company__company-description">
+                        {% autoescape off %}
+                            <p>{{ company.description |safe }}</p>
+                        {% endautoescape %}
+                    </div>
+
+                    <div>
+                        <a href="{{ company.webpage_url }}" class="company__website">{{ company.webpage_url }}</a>
+                    </div>
+            </div>
+        </div>
+        <div class="card company__card">
+            <span>bingo</span>
+        </div>
 </div>
 {% endblock %}

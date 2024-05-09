@@ -5,6 +5,9 @@ URL configuration for job_hunters app.
 from django.urls import path
 from . import views
 
+handler404 = 'job_hunters.views.handler404'
+handler500 = 'job_hunters.views.handler500'
+
 urlpatterns = [
     path("", views.index, name="index"),
     path("login/", views.login_view, name="login"),

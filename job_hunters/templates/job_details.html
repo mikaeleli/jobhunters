@@ -12,8 +12,8 @@
     <div class="card job_details__company_details">
         <h4 class="job_details__company__title">{{ job.offered_by.name }}</h4>
         <p class="job_details__company__subtitle">{{ job.offered_by.address }}</p>
-        <p class="job_details__company__description">{{ job.description }}</p>
-        <a href="{% url 'company' company_name=job.offered_by.name %}" class="job_details__company__link">
+        <p class="job_details__company__description">{{ job.offered_by.description |safe |slice:120}}</p>
+        <a href="{{ job.offered_by.get_absolute_url }}" class="job_details__company__link">
             More about company
         </a>
     </div>
