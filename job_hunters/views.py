@@ -105,7 +105,6 @@ def profile_view(request):
         context["image_data"] = image_encoded
         context["userprofile"] = True
 
-
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, user=request.user)
 

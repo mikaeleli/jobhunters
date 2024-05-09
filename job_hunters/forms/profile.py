@@ -29,8 +29,8 @@ class ProfileForm(forms.Form):
 
         user = self.user
 
+        changes = False
         if hasattr(user, "companyprofile"):
-            changes = False
             if data.get("company_name") != user.companyprofile.name:
                 user.companyprofile.name = data.get("company_name")
                 changes = True
@@ -79,10 +79,22 @@ class ProfileForm(forms.Form):
         else:
             if data.get("full_name") != user.userprofile.full_name:
                 user.userprofile.full_name = data.get("full_name")
-                user.userprofile.save()
+                changes = True
 
             if data.get("profile_image") is not None:
-                user.userprofile.profile_image.image_data = data.get("profile_image").read()
+                if hasattr(user.userprofile.profile_image, "image_data"):
+                    user.userprofile.profile_image.image_data = data.get("profile_image").read()
+
+                else:
+                    profile_image = Image.objects.create(
+                        image_data=data.get("profile_image").read(),
+                    )
+                    user.userprofile.profile_image = profile_image
+
                 user.userprofile.profile_image.save()
+                changes = True
+
+            if changes:
+                user.userprofile.save()
 
         user.save()
