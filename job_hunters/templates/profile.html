@@ -5,6 +5,7 @@
 {% block head %}
 {% load static %}
 <link rel="stylesheet" href="{% static 'profile.css' %}" />
+    <link rel="stylesheet" href="{% static 'company.css' %}" />
 {% endblock %}
 
 {% block content %}
@@ -148,8 +149,13 @@
                 </form>
             </div>
         </div>
-        <div class="card profile__card">
-            <span>bingo</span>
+        <div class="card company__card company__job-listings">
+            <h4>My open listings</h4>
+            {% for job in company_jobs %}
+                <a href="{{ job.get_absolute_url }}" class="company__job-listing">{{ job.title }} <i class="fa-solid fa-link"></i> </a>
+            {% empty %}
+            	<span>No listings found</span>
+            {% endfor %}
         </div>
     {% endif %}
 </div>

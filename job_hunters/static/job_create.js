@@ -27,12 +27,13 @@ jobStartDateInput.min = now_date_input;
 let categorySelectOptions = Array.from(document.querySelectorAll('.job_create__form .form__field select#job_category option'));
 
 const toggleSelected = (option) => {
+    option.focus();
     option.hasAttribute('selected') ? option.removeAttribute('selected', '') : option.setAttribute('selected', '');
 };
 categorySelectOptions.forEach((option) => {
-   option.addEventListener('mousedown', (el) => {
-       el.preventDefault();
-       toggleSelected(el.currentTarget);
+   option.addEventListener('mousedown', (event) => {
+       event.preventDefault();
+       toggleSelected(event.currentTarget);
    });
 });
 

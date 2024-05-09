@@ -63,12 +63,8 @@
 }
 
 .job_create__job-form .job_create__form .form__field.job_category {
+    grid-column: span 1;
     grid-row: span 4;
-}
-
-.job_create__job-form .job_create__form .form__field.job_category select {
-    padding: 16px;
-    height: unset;
 }
 
 .job_create__job-form .job_create__form button[type="submit"] {

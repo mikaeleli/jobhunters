@@ -39,6 +39,19 @@ textarea.form__input {
     resize: vertical;
 }
 
+.form__select__multi {
+    height: 100%;
+    padding: 0;
+}
+
+.form__select__multi option {
+    padding: 16px;
+}
+
+.form__select__multi option:checked, .form__select__multi option:active:checked, .form__select__multi option:focus:checked  {
+    background: var(--color-primary-light);
+}
+
 .form__file {
     background: #FFF;
     border: 2px solid var(--color-primary);

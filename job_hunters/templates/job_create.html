@@ -5,24 +5,13 @@
 {% block head %}
 {% load static %}
     <link rel="stylesheet" href="{% static 'job_create.css' %}" />
+    <link rel="stylesheet" href="{% static 'company.css' %}" />
     <script defer src="{% static 'job_create.js' %}"></script>
 {% endblock %}
 
 {% block content %}
 <div class="job_create__container">
     <div class="card job_create__card">
-{#        <div class="job_create__company-cover">#}
-{#            <div class="job_create__company-cover-image">#}
-{#            {% if cover_data %}#}
-{#                <img src="{{ cover_data }}" alt="company cover image" height="100%" width="100%" />#}
-{#            {% else %}#}
-{#                <img src="{%  static 'profile_cover_placeholder.jpg' %}" alt="default company cover image" height="100%" width="100%" />#}
-{#            {% endif %}#}
-{#            </div>#}
-{#            <div class="job_create__company-cover-logo">#}
-{#                <img src="{{ logo_data }}" alt="company logo" height="100%" width="100%" />#}
-{#            </div>#}
-{#        </div>#}
         <div class="job_create__job-form">
             <form method="post" enctype="multipart/form-data" class="job_create__form">
                 {% csrf_token %}
@@ -43,10 +32,16 @@
 
                 <div class="form__field job_category">
                     <label for="job_category">Job category</label>
-                    <select id="job_category" name="job_category" class="form__input" multiple>
-                        {% for category in job_categories %}
-                        <option value="{{ category.id }}" {% if form.job_category.value == category.id %}selected{% endif %} >{{ category.name }}</option>
-                        {% endfor %}
+                    <select id="job_category" name="job_category" class="form__input form__select__multi" multiple>
+                        {% if form.job_category %}
+                            {% for category in form.job_category %}
+                                {{ category }}
+                            {% endfor %}
+                        {% else %}
+                            {% for category in job_categories %}
+                            <option value="{{ category.id }}" >{{ category.name }}</option>
+                            {% endfor %}
+                        {% endif %}
                     </select>
                     {% if form.job_category.errors %}
                         <ul class="form__error__list">
@@ -115,8 +110,13 @@
             </form>
         </div>
     </div>
-    <div class="card job_create__card">
-        <span>bingo</span>
+    <div class="card company__card company__job-listings">
+        <h4>My open listings</h4>
+        {% for job in company_jobs %}
+            <a href="{{ job.get_absolute_url }}" class="company__job-listing">{{ job.title }} <i class="fa-solid fa-link"></i> </a>
+        {% empty %}
+            <span>No listings found</span>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
