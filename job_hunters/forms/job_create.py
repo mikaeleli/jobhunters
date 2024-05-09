@@ -1,0 +1,72 @@
+"""
+Forms for the create job page.
+"""
+import datetime
+from typing import Any
+
+from django import forms
+from django.contrib.auth.models import User
+
+from job_hunters.models import Job, Category
+
+
+class JobForm(forms.Form):
+    """
+    Form for the create job page.
+    """
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user")
+        super().__init__(*args, **kwargs)
+
+    job_title = forms.CharField(max_length=250, initial="", required=False)
+    job_category = forms.ModelChoiceField(queryset=Category.objects.all(), to_field_name="id", required=False)
+    job_due_date = forms.DateField(required=False)
+    job_start_date = forms.DateField(required=False)
+    job_description = forms.CharField(widget=forms.Textarea, required=False)
+
+    def clean(self) -> dict[str, Any]:
+        cleaned_data = super().clean()
+
+        # check if job has title
+        if cleaned_data.get("job_title") is None or cleaned_data.get("job_title") == "":
+            self.add_error("job_title", "Job title is required")
+
+        # check if job has valid category
+        if cleaned_data.get("job_category") is None:
+            self.add_error("job_category", "Job category is required")
+
+        # check if job has a valid due date
+        if cleaned_data.get("job_due_date") is None:
+            self.add_error("job_due_date", "Job due date is required")
+
+        elif cleaned_data.get("job_due_date") < datetime.date.today():
+            self.add_error("job_due_date", "Job due date has to be a future date")
+
+        if cleaned_data.get("job_start_date") is None:
+            self.add_error("job_start_date", "Job start date is required")
+
+        elif cleaned_data.get("job_start_date") < datetime.date.today():
+            self.add_error("job_start_date", "Job start date has to be a future date")
+
+        if cleaned_data.get("job_description") is None or cleaned_data.get("job_description") == "":
+            self.add_error("job_description", "Job description is required")
+
+        return cleaned_data
+
+    def save(self):
+        data = self.cleaned_data
+
+        user = self.user
+
+        job = Job.objects.create(
+            title=data.get("job_title"),
+            category=data.get("job_category"),
+            due_date=data.get("job_due_date"),
+            start_date=data.get("job_start_date"),
+            description=data.get("job_description"),
+        )
+        
+        job.save()
+        
+        return job

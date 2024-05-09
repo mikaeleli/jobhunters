@@ -31,7 +31,7 @@
 
                 <div class="form__field">
                     <label for="job_title">Job title</label>
-                    <input id="job_title" type="text" name="job_title" placeholder="Job title" class="form__input" value="" />
+                    <input id="job_title" type="text" name="job_title" placeholder="Job title" class="form__input" value="{{ form.job_title.value |default_if_none:"" }}" />
                     {% if form.job_title.errors %}
                         <ul class="form__error__list">
                             {% for error in form.job_title.errors %}
@@ -40,14 +40,14 @@
                         </ul>
                     {% endif %}
                 </div>
-            
+
                 <div class="form__field">
                     <label for="job_category">Job category</label>
-                    <select id="job_category" name="job_category" class="form__input">
-                        <option></option>
+                    <select id="job_category" name="job_category" class="form__input" multiple>
                         {% for category in job_categories %}
-                        <option value="{{ category.name }}" {% if form.category.value == category.name %}selected{% endif %} >{{ category.name }}</option>
+                        <option value="{{ category.id }}" {% if form.job_category.value == category.id %}selected{% endif %} >{{ category.name }}</option>
                         {% endfor %}
+                    </select>
                     {% if form.job_category.errors %}
                         <ul class="form__error__list">
                             {% for error in form.job_category.errors %}
@@ -55,12 +55,11 @@
                             {% endfor %}
                         </ul>
                     {% endif %}
-                    </select>
                 </div>
 
                 <div class="form__field">
                     <label for="job_due_date">Application deadline</label>
-                    <input id="job_due_date" type="date" name="job_due_date" placeholder="Application deadline" class="form__input" value="" />
+                    <input id="job_due_date" type="date" name="job_due_date" placeholder="Application deadline" class="form__input" value="{{ form.job_due_date.value |default_if_none:"" }}" />
                     {% if form.job_due_date.errors %}
                         <ul class="form__error__list">
                             {% for error in form.job_due_date.errors %}
@@ -71,11 +70,11 @@
                 </div>
 
                 <div class="form__field">
-                    <label for="job_starting_date">Start date</label>
-                    <input id="job_starting_date" type="date" name="job_starting_date" class="form__input" value="" />
-                    {% if form.job_starting_date.errors %}
+                    <label for="job_start_date">Start date</label>
+                    <input id="job_start_date" type="date" name="job_start_date" class="form__input" value="{{ form.job_start_date.value |default_if_none:"" }}" />
+                    {% if form.job_start_date.errors %}
                         <ul class="form__error__list">
-                            {% for error in form.job_starting_date.errors %}
+                            {% for error in form.job_start_date.errors %}
                                 <li class="form__error__item">{{ error }}</li>
                             {% endfor %}
                         </ul>

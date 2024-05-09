@@ -7,6 +7,7 @@ from django.http import Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout, authenticate, login
 
+from job_hunters.forms.job_create import JobForm
 from job_hunters.forms.jobs_filter import JobsFilter
 from job_hunters.forms.login import LoginForm
 from job_hunters.forms.profile import ProfileForm
@@ -195,6 +196,14 @@ def job_create_view(request):
     """
     View for the job create page.
     """
+    if request.method == "POST" and request.user.is_authenticated and hasattr(request.user, "companyprofile"):
+        form = JobForm(request.POST, user=request.user)
+
+        if form.is_valid():
+            form.save()
+            return redirect("jobs")
+
+        return render(request, "job_create.html", {"company": request.user.companyprofile, "job_categories": Category.objects.all(), "form": form})
 
     if request.user.is_authenticated and hasattr(request.user, "companyprofile"):
         return render(request, "job_create.html", {"company": request.user.companyprofile, "job_categories": Category.objects.all()})
