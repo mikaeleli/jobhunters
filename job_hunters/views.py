@@ -6,9 +6,11 @@ from base64 import b64encode
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout, authenticate, login
 
+from job_hunters.forms.jobs_filter import JobsFilter
 from job_hunters.forms.login import LoginForm
 from job_hunters.forms.profile import ProfileForm
 from job_hunters.forms.register import RegisterForm
+from job_hunters.models import Job, CompanyProfile, Category
 
 # Create your views here.
 
@@ -116,3 +118,91 @@ def profile_view(request):
         return render(request, "profile.html", context)
 
     return render(request, "profile.html", context)
+
+
+def jobs_view(request):
+    """
+    View for the jobs page.
+    """
+
+    categories = Category.objects.all()
+    companies = CompanyProfile.objects.all()
+
+    if request.method == "POST":
+        form = JobsFilter(request.POST, categories=categories, companies=companies)
+        jobs = Job.objects.all()
+
+        if form.is_valid():
+            search = form.cleaned_data.get("search")
+            category = form.cleaned_data.get("category")
+            company = form.cleaned_data.get("company")
+            include_applied = form.cleaned_data.get("include_applied")
+            order_by = form.cleaned_data.get("order_by")
+
+            filters = {}
+
+            if search:
+                filters["title__icontains"] = search
+
+            if category:
+                filters["categories__name"] = category
+
+            if company:
+                filters["offered_by__name"] = company
+
+            jobs = jobs.filter(**filters)
+
+            if not include_applied:
+                jobs = jobs.exclude(applications__applicant=request.user)
+
+            if order_by:
+                jobs = jobs.order_by(order_by)
+
+            return render(request, "jobs.html", {"jobs": jobs, "form": form})
+
+        return render(request, "jobs.html", {"jobs": jobs, "form": form})
+
+    form = JobsFilter(categories=categories, companies=companies)
+    jobs = Job.objects.all()
+
+    return render(request, "jobs.html", {"jobs": jobs, "form": form})
+
+
+def job_view(request, job_id):
+    """
+    View for the job page.
+    """
+
+    job = Job.objects.get(id=job_id)
+
+    return render(request, "job_details.html", {"job": job})
+
+
+def job_apply_view(request, job_id):
+    """
+    View for the job apply page.
+    """
+
+    # TODO: Implement job application logic.
+
+    return redirect("jobs")
+
+
+def company_details_view(request, company_name):
+    """
+    View for the company details page.
+    """
+
+    company = CompanyProfile.objects.get(name=company_name)
+
+    return render(request, "company_details.html", {"company": company})
+
+
+def applications_view(request):
+    """
+    View for the applications page.
+    """
+
+    applications = request.user.applications.all()
+
+    return render(request, "applications.html", {"applications": applications})

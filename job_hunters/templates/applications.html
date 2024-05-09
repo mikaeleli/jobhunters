@@ -1,0 +1,47 @@
+{% extends "_base.html" %}
+
+{% block title %}Job Hunters - Applications{% endblock %}
+
+{% block head %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'applications.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="applications__container">
+    <div class="applications__list">
+        {% for application in applications %}
+        <div class="card application__item">
+            <div class="application__item__titles__container">
+                <div class="application__item__title__container">
+                    <h3 class="application__item__title">{{ application.job.title }}</h3>
+
+                    <p>
+                        {% if application.job.is_part_time %}
+                        Part
+                        {% else %}
+                        Full
+                        {% endif %}
+                        time position
+                    </p>
+                </div>
+
+                <p class="application__item__subtitle">{{ application.job.offered_by.name }}</p>
+            </div>
+
+            <div class="application__item__action__container">
+                <div class="application__item__date">
+                    <i class="fa-regular fa-calendar-plus"></i>
+                    <p class="application__item__date">{{ application.applied_at|date:"M jS Y" }}</p>
+                </div>
+
+                <a class="application__item__link" href="{% url 'job' job_id=application.job.id %}">
+                    Details
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

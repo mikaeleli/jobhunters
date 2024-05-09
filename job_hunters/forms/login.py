@@ -19,6 +19,9 @@ class LoginForm(forms.Form):
     def clean(self) -> dict[str, Any]:
         cleaned_data = super().clean()
 
+        if self.errors:
+            return cleaned_data
+
         # check if email exists
         if not User.objects.filter(email=cleaned_data.get("email")).exists():
             self.add_error("email", "Either the email or password is incorrect")

@@ -4,6 +4,13 @@
     gap: 8px;
 }
 
+.checkbox__label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-direction: row;
+}
+
 .form__input {
     height: 48px;
     border: 2px solid black;
