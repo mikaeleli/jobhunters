@@ -40,9 +40,8 @@ let toggleCheckboxContainers = Array.from(document.querySelectorAll('.form__togg
 
 const toggleChecked = (el) => {
     if (el.hasAttribute('data-toggle-target')) {
-        console.log(el.parent);
-        checkbox = el.parent.children.getElementById(el.dataset.toggleTarget)
-        checkbox.hasAttribute('checked') ? option.removeAttribute('checked', '') : option.setAttribute('checked', '');
+        let checkbox = Array.from(el.parentNode.childNodes).find(tag => tag.id === el.dataset.toggleTarget);
+        checkbox.hasAttribute('checked') ? checkbox.removeAttribute('checked', '') : checkbox.setAttribute('checked', '');
     }
 };
 toggleCheckboxContainers.forEach((option) => {

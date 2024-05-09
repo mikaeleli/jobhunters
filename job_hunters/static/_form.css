@@ -99,7 +99,7 @@ textarea.form__input {
 }
 
 .form__toggle__checkbox {
-    /*display: none;*/
+    display: none;
 }
 
 .form__toggle__container {

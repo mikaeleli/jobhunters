@@ -19,7 +19,7 @@ class JobForm(forms.Form):
         super().__init__(*args, **kwargs)
 
     job_title = forms.CharField(max_length=250, initial="", required=False)
-    job_category = forms.ModelChoiceField(queryset=Category.objects.all(), to_field_name="id", required=False)
+    job_category = forms.ModelMultipleChoiceField(queryset=Category.objects.all(), to_field_name="id", required=False)
     job_due_date = forms.DateField(required=False)
     job_start_date = forms.DateField(required=False)
     job_is_part_time = forms.BooleanField(required=False)
@@ -60,14 +60,15 @@ class JobForm(forms.Form):
         user = self.user
 
         job = Job.objects.create(
-            offered_by=user,
+            offered_by=user.companyprofile,
             title=data.get("job_title"),
-            category=data.get("job_category"),
             due_date=data.get("job_due_date"),
-            start_date=data.get("job_start_date"),
+            starting_date=data.get("job_start_date"),
             is_part_time=data.get("job_is_part_time"),
             description=data.get("job_description"),
         )
+
+        job.categories.set(data.get("job_category"))
         
         job.save()
         
