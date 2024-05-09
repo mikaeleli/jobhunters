@@ -59,6 +59,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    overflow: hidden;
     transform: translateY(-96px);
 
 }
@@ -68,19 +69,37 @@
     border-radius: 16px;
     width: 192px;
     aspect-ratio: 1;
+    object-fit: cover;
 }
 
 .profile__company-form .profile__form {
-
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
-.profile__company-form .profile__company-form__half_column {
-    grid-column: auto;
+.profile__company-form .profile__form .form__field {
+    grid-column: span 2;
 }
 
-.profile__company-form .profile__company-form__full_column {
+.profile__company-form .profile__form button[type="submit"] {
+    grid-column-start: 1;
+}
+
+@media screen and (min-width: 768px) {
+    .profile__company-form .profile__form .form__field {
+        grid-column: span 2;
+    }
+
+    .profile__company-form .profile__company-form-description.form__field {
+        grid-column: span 4;
+    }
+}
+
+.profile__company-form-description .form__input {
+
+}
+
+.profile__company-form .profile__company-form-full-row {
     grid-column: 1 / -1;
 }
 

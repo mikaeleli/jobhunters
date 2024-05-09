@@ -68,14 +68,14 @@
                 <form method="post" enctype="multipart/form-data" class="profile__form">
                     {% csrf_token %}
 
-                    <h2 class="profile__company-form__full_column">Company profile</h2>
+                    <h2 class="profile__company-form-full-row">Company profile</h2>
                 
                     <div class="form__field">
-                        <label for="full_name">Full name</label>
-                        <input id="full_name" type="text" name="full_name" placeholder="Full name" class="form__input" value="{{ user.userprofile.full_name }}" />
-                        {% if form.full_name.errors %}
+                        <label for="company_name">Company name</label>
+                        <input id="company_name" type="text" name="company_name" placeholder="Company name" class="form__input" value="{{ user.companyprofile.name }}" />
+                        {% if form.company_name.errors %}
                             <ul class="form__error__list">
-                                {% for error in form.full_name.errors %}
+                                {% for error in form.company_name.errors %}
                                     <li class="form__error__item">{{ error }}</li>
                                 {% endfor %}
                             </ul>
@@ -83,11 +83,11 @@
                     </div>
                 
                     <div class="form__field">
-                        <label for="full_name">Full name</label>
-                        <input id="full_name" type="text" name="full_name" placeholder="Full name" class="form__input" value="{{ user.userprofile.full_name }}" />
-                        {% if form.full_name.errors %}
+                        <label for="company_address">Location</label>
+                        <input id="company_address" type="text" name="company_address" placeholder="Company address" class="form__input" value="{{ user.companyprofile.address|default_if_none:"" }}" />
+                        {% if form.company_address.errors %}
                             <ul class="form__error__list">
-                                {% for error in form.full_name.errors %}
+                                {% for error in form.company_address.errors %}
                                     <li class="form__error__item">{{ error }}</li>
                                 {% endfor %}
                             </ul>
@@ -95,11 +95,11 @@
                     </div>
 
                     <div class="form__field profile__company-form__half_column">
-                        <label for="profile_image">Company logo</label>
-                        <input id="profile_image" type="file" name="profile_image" value="{{ form.profile_image.value }}" class="form__file"/>
-                        {% if form.profile_image.errors %}
+                        <label for="company_logo">Company logo</label>
+                        <input id="company_logo" type="file" name="company_logo" value="{{ form.company_logo.value }}" class="form__file"/>
+                        {% if form.company_logo.errors %}
                             <ul class="form__error__list">
-                                {% for error in form.profile_image.errors %}
+                                {% for error in form.company_logo.errors %}
                                     <li class="form__error__item">{{ error }}</li>
                                 {% endfor %}
                             </ul>
@@ -107,18 +107,42 @@
                     </div>
                 
                     <div class="form__field profile__company-form__half_column">
-                        <label for="profile_image">Company logo</label>
-                        <input id="profile_image" type="file" name="profile_image" value="{{ form.profile_image.value }}" class="form__file"/>
-                        {% if form.profile_image.errors %}
+                        <label for="company_cover">Company cover image</label>
+                        <input id="company_cover" type="file" name="company_cover" value="{{ form.company_cover.value }}" class="form__file"/>
+                        {% if form.company_cover.errors %}
                             <ul class="form__error__list">
-                                {% for error in form.profile_image.errors %}
+                                {% for error in form.company_cover.errors %}
                                     <li class="form__error__item">{{ error }}</li>
                                 {% endfor %}
                             </ul>
                         {% endif %}
                     </div>
 
-                    <button type="submit" class="profile__company-form__half_column">
+                    <div class="form__field profile__company-form-description">
+                        <label for="company_description">Description</label>
+                        <textarea id="company_description" type="text" name="company_description" placeholder="Description" class="form__input" value="{{ user.companyprofile.description }}"></textarea>
+                        {% if form.company_description.errors %}
+                            <ul class="form__error__list">
+                                {% for error in form.company_description.errors %}
+                                    <li class="form__error__item">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+
+                    <div class="form__field">
+                        <label for="company_website">Website</label>
+                        <input id="company_website" type="text" name="company_website" placeholder="example.com" class="form__input" value="{{ user.companyprofile.webpage_url|default_if_none:"" }}" />
+                        {% if form.company_website.errors %}
+                            <ul class="form__error__list">
+                                {% for error in form.company_website.errors %}
+                                    <li class="form__error__item">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+
+                    <button type="submit" class="">
                         Save profile
                     </button>
                 </form>

@@ -10,11 +10,17 @@
     border-radius: 8px;
     padding: 0 16px;
     font-size: 16px;
+    resize: vertical;
 
     &:focus {
         outline: none;
         border-color: var(--color-primary);
     }
+}
+
+textarea.form__input {
+    padding: 16px;
+    min-height: calc(16px * 20)
 }
 
 .form__file {
