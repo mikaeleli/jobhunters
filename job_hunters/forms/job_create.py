@@ -5,7 +5,6 @@ import datetime
 from typing import Any
 
 from django import forms
-from django.contrib.auth.models import User
 
 from job_hunters.models import Job, Category
 
@@ -23,6 +22,7 @@ class JobForm(forms.Form):
     job_category = forms.ModelChoiceField(queryset=Category.objects.all(), to_field_name="id", required=False)
     job_due_date = forms.DateField(required=False)
     job_start_date = forms.DateField(required=False)
+    job_is_part_time = forms.BooleanField(required=False)
     job_description = forms.CharField(widget=forms.Textarea, required=False)
 
     def clean(self) -> dict[str, Any]:
@@ -60,10 +60,12 @@ class JobForm(forms.Form):
         user = self.user
 
         job = Job.objects.create(
+            offered_by=user,
             title=data.get("job_title"),
             category=data.get("job_category"),
             due_date=data.get("job_due_date"),
             start_date=data.get("job_start_date"),
+            is_part_time=data.get("job_is_part_time"),
             description=data.get("job_description"),
         )
         

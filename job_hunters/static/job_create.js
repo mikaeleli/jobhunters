@@ -35,3 +35,19 @@ categorySelectOptions.forEach((option) => {
        toggleSelected(el.currentTarget);
    });
 });
+
+let toggleCheckboxContainers = Array.from(document.querySelectorAll('.form__toggle__container'));
+
+const toggleChecked = (el) => {
+    if (el.hasAttribute('data-toggle-target')) {
+        console.log(el.parent);
+        checkbox = el.parent.children.getElementById(el.dataset.toggleTarget)
+        checkbox.hasAttribute('checked') ? option.removeAttribute('checked', '') : option.setAttribute('checked', '');
+    }
+};
+toggleCheckboxContainers.forEach((option) => {
+   option.addEventListener('mousedown', (el) => {
+       el.preventDefault();
+       toggleChecked(el.currentTarget);
+   });
+});
