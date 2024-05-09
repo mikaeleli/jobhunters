@@ -1,22 +1,122 @@
 .profile__container {
-    display: flex;
-    gap: 32px;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 64px;
     width: 100%;
+}
+
+.profile__container-userprofile {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.profile__container-userprofile .profile__image-card {
+    grid-column: span 2;
+}
+
+@media screen and (min-width: 768px) {
+    .profile__container-userprofile .profile__image-card {
+        grid-column: span 1;
+    }
+}
+
+.profile__container-userprofile .profile__card {
+    grid-column: span 2;
+}
+
+
+.profile__container-companyprofile {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.profile__container-companyprofile .profile__card:nth-child(1) {
+    grid-column: span 3;
+}
+
+.profile__container-companyprofile .profile__card:nth-child(2) {
+    grid-row-start: 1;
+    grid-column: span 2;
+}
+
+@media screen and (min-width: 768px) {
+    .profile__container-companyprofile .profile__card:nth-child(2) {
+        grid-column: span 2 / end;
+    }
+}
+
+.profile__company-cover {
+    max-height: calc(35ch + 104px);
+}
+
+.profile__company-cover-image img {
+    max-height: 35ch;
+    object-fit: cover;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.profile__company-cover .profile__company-cover-logo {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    transform: translateY(-96px);
+
+}
+
+.profile__company-cover .profile__company-cover-logo img {
+    border: 2px solid var(--color-primary);
+    border-radius: 16px;
+    width: 192px;
+    aspect-ratio: 1;
+    object-fit: cover;
+}
+
+.profile__company-form .profile__form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.profile__company-form .profile__form .form__field {
+    grid-column: span 2;
+}
+
+.profile__company-form .profile__form button[type="submit"] {
+    grid-column-start: 1;
+}
+
+@media screen and (min-width: 768px) {
+    .profile__company-form .profile__form .form__field {
+        grid-column: span 2;
+    }
+
+    .profile__company-form .profile__company-form-description.form__field {
+        grid-column: span 4;
+    }
+}
+
+.profile__company-form-description .form__input {
+
+}
+
+.profile__company-form .profile__company-form-full-row {
+    grid-column: 1 / -1;
 }
 
 .profile__image-card {
     border-radius: 32px;
     box-shadow: var(--box-shadow);
-    width: 400px;
-    height: 400px;
+    aspect-ratio: 1;
     overflow: hidden;
+}
+
+.profile__image-card img {
+    object-fit: cover;
 }
 
 .profile__card {
     display: flex;
-    flex: 1;
-    max-width: 600px;
+    flex-direction: column;
 }
 
 .profile__form {

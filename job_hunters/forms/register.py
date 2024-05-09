@@ -81,7 +81,6 @@ class RegisterForm(forms.Form):
             return company_profile
 
         elif data.get('user_type') == "job_seeker":
-            print('jobseeker')
             profile_image = Image.objects.create(
                 image_data=data.get("profile_image").read(),
             )
