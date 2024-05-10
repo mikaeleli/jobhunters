@@ -6,6 +6,7 @@ from base64 import b64encode
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout, authenticate, login
+from django.contrib.auth.decorators import login_required
 
 from job_hunters.forms.job_create import JobForm
 from job_hunters.forms.jobs_filter import JobsFilter
@@ -78,6 +79,7 @@ def logout_view(request):
     return redirect("login")
 
 
+@login_required
 def profile_view(request):
     """
     View for the profile page.
