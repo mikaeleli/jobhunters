@@ -1,0 +1,28 @@
+{% extends "job_application/_base_application.html" %}
+
+{% block application_form %}
+<div class="card application__contact__form__container">
+    <form method="post" class="application__contact__form">
+        {% csrf_token %}
+        {{ wizard.management_form }}
+
+        <h2 class="application__form__title">{{ title }}</h2>
+
+        {% include "_input.html" with name="contact_information-full_name" label="Full name" value=user.get_full_name errors=form.full_name.error %}
+
+        {% include "_input.html" with name="contact_information-street_name" label="Street name" value=form.street_name.value errors=form.street_name.errors %}
+
+        {% include "_input.html" with name="contact_information-house_number" label="House number" value=form.house_number.value errors=form.house_number.errors %}
+
+        {% include "_input.html" with name="contact_information-city" label="City" value=form.city.value errors=form.city.errors %}
+
+        {% include "_input.html" with name="contact_information-country" label="Country" value=form.country.value errors=form.country.errors %}
+
+        {% include "_input.html" with name="contact_information-postal_code" label="Postal code" value=form.postal_code.value errors=form.postal_code.errors %}
+
+        <button type="submit" class="form__button">
+            Next step
+        </button>
+    </form>
+</div>
+{% endblock %}

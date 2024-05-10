@@ -50,7 +50,7 @@ class Experience(models.Model):
     role = models.CharField(max_length=255)
     workplace_name = models.CharField(max_length=255)
     start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
+    end_date = models.DateTimeField(null=True)
 
 
 class Recommendation(models.Model):

@@ -10,8 +10,6 @@ from .models import (
     Recommendation,
 )
 
-from .models import CompanyProfile
-
 # Register your models here.
 
 admin.site.register(UserProfile)

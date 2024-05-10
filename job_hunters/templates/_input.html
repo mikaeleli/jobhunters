@@ -1,0 +1,11 @@
+<div class="form__field">
+    <label for="{{ name }}">{{ label }}</label>
+    <input id="{{ name }}" type="{{ type|default_if_none:"text" }}" name="{{ name }}" placeholder="{{ label }}" class="form__input" value="{{ value|default_if_none:"" }}" />
+    {% if errors %}
+        <ul class="form__error__list">
+            {% for error in errors %}
+                <li class="form__error__item">{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>

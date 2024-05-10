@@ -92,16 +92,13 @@
                     <label for="order_by">Order by</label>
                     <select name="order_by" class="form__input">
                         <option></option>
-                        <!-- choice field -->
                         {% for choice in form.order_by.field.choices %}
                         <option value="{{ choice.0 }}" {% if form.order_by.value == choice.0 %}selected{% endif %}>{{ choice.1 }}</option>
                         {% endfor %}
                     </select>
                 </div>
 
-
-
-                <button type="submit">
+                <button type="submit" class="form__button">
                     Search
                 </button>
             </form>

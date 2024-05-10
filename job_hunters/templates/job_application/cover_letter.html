@@ -1,0 +1,18 @@
+{% extends "job_application/_base_application.html" %}
+
+{% block application_form %}
+<div class="card application__contact__form__container">
+    <form method="post" class="application__contact__form">
+        {% csrf_token %}
+        {{ wizard.management_form }}
+
+        <h2 class="application__form__title">{{ title }}</h2>
+        
+        <textarea name="cover_letter-cover_letter" class="application__cover_letter__text_area" placeholder="Cover letter" rows="10" cols="30">{{ form.cover_letter.value|default_if_none:"" }}</textarea>
+
+        <button type="submit" class="form__button">
+            Next step
+        </button>
+    </form>
+</div>
+{% endblock %}
