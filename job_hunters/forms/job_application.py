@@ -4,6 +4,7 @@ Forms for the job application.
 
 from typing import Any
 from django import forms
+from django_countries.fields import CountryField
 
 
 class ContactInformationForm(forms.Form):
@@ -18,7 +19,7 @@ class ContactInformationForm(forms.Form):
     house_number = forms.CharField(max_length=50, initial="")
     city = forms.CharField(max_length=255, initial="")
     postal_code = forms.CharField(max_length=50, initial="")
-    country = forms.CharField(max_length=255, initial="")
+    country = CountryField().formfield()
 
 
 class CoverLetterForm(forms.Form):
