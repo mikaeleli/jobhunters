@@ -14,7 +14,7 @@
         <div class="card application__item">
             <div class="application__item__titles__container">
                 <div class="application__item__title__container">
-                    <h3 class="application__item__title">{{ application.job.title }}</h3>
+                    <h3 class="application__item__title">{{ application.job.title }}{% if is_company %}</h3> <span class="application__applicant__name">{{ application.applicant.userprofile.full_name }} - <i>{{ application.applicant.email }}</i>{% endif %}</span>
 
                     <p>
                         {% if application.job.is_part_time %}

@@ -27,6 +27,10 @@
     font-weight: 800;
 }
 
+.application__applicant__name {
+    margin: 4px auto 4px 16px;
+}
+
 .application__item__title__container {
     display: flex;
     justify-content: space-between;
