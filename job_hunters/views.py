@@ -448,15 +448,11 @@ def job_view(request, job_id):
     company_logo_b64 = b64encode(company_logo_image.image_data).decode("utf-8")
     company_logo_data_encoded = f"data:image/png;base64,{company_logo_b64}"
 
-    user_is_company = (
-        True
-        if request.user.is_authenticated and hasattr(request.user, "companyprofile")
-        else False
+    user_is_company = bool(
+        request.user.is_authenticated and hasattr(request.user, "companyprofile")
     )
 
-    # TODO, fetch actual status when it has been added (will be part of application object)
     application = Application.objects.filter(applicant=request.user).first()
-    application_status = "rejected"
 
     return render(
         request,
@@ -466,7 +462,6 @@ def job_view(request, job_id):
             "company_logo_data": company_logo_data_encoded,
             "application": application,
             "user_is_company": user_is_company,
-            "application_status": application_status,
         },
     )
 
@@ -555,18 +550,7 @@ def applications_view(request):
 
     applications = request.user.applications.all()
 
-    # TODO: remove and change template to use status from application object
-    import random
-
-    application_status = random.choice(["in_progress", "rejected", "accepted"])
-
-    print(application_status)
-
-    return render(
-        request,
-        "applications.html",
-        {"applications": applications, "application_status": application_status},
-    )
+    return render(request, "applications.html", {"applications": applications})
 
 
 def handler404(request, exception, template_name="404.html"):

@@ -15,6 +15,11 @@ class Application(models.Model):
     Job application
     """
 
+    class Status(models.TextChoices):
+        PENDING = "PENDING", "Pending"
+        REJECTED = "REJECTED", "Rejected"
+        ACCEPTED = "ACCEPTED", "Accepted"
+
     id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     job = models.ForeignKey(
         Job,
@@ -34,6 +39,11 @@ class Application(models.Model):
     postal_code = models.CharField(max_length=255)
     country = models.CharField(max_length=255)
     applied_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(
+        max_length=255,
+        choices=Status.choices,
+        default=Status.PENDING,
+    )
 
 
 class Experience(models.Model):
