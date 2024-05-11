@@ -4,14 +4,12 @@ This file contains the views for the job_hunters app.
 
 import datetime
 
-
 from base64 import b64encode
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout, authenticate, login
-from django.contrib.auth.decorators import login_required
+from job_hunters.middleware.login_required_middleware import login_exempt
 from formtools.wizard.views import SessionWizardView
-
 
 from job_hunters.forms.job_create import JobForm
 from job_hunters.forms.jobs_filter import JobsFilter
@@ -34,9 +32,11 @@ from job_hunters.models import (
     Recommendation,
 )
 
+
 # Create your views here.
 
 
+@login_exempt
 def index(request):
     """
     View for the index page.
@@ -98,7 +98,6 @@ def logout_view(request):
     return redirect("login")
 
 
-@login_required
 def profile_view(request):
     """
     View for the profile page.
@@ -141,6 +140,7 @@ def profile_view(request):
     return render(request, "profile.html", context)
 
 
+@login_exempt
 def jobs_view(request):
     """
     View for the jobs page.
@@ -212,7 +212,6 @@ APPLICATION_FORMS = [
     ("review", "Review", ReviewForm),
 ]
 
-
 APPLICATION_FORM_TEMPLATES = {
     "contact_information": "job_application/contact_information.html",
     "cover_letter": "job_application/cover_letter.html",
@@ -269,14 +268,8 @@ class ApplicationWizardView(SessionWizardView):
                     {
                         "role": data["role"],
                         "company": data["company"],
-                        "start_date": datetime.date.strptime(
-                            data["start_date"], "%Y-%m-%d"
-                        ).date(),
-                        "end_date": (
-                            datetime.date.strptime(data["end_date"], "%Y-%m-%d").date()
-                            if "end_date" in data
-                            else None
-                        ),
+                        "start_date": data["start_date"],
+                        "end_date": data["end_date"] if "end_date" in data else None,
                     }
                 )
 
@@ -438,6 +431,7 @@ class ApplicationWizardView(SessionWizardView):
         return render(self.request, "job_application/success.html", context)
 
 
+@login_exempt
 def job_view(request, job_id):
     """
     View for the job page.
@@ -452,7 +446,9 @@ def job_view(request, job_id):
         request.user.is_authenticated and hasattr(request.user, "companyprofile")
     )
 
-    application = Application.objects.filter(applicant=request.user, job=job)
+    application = None
+    if request.user.is_authenticated and not user_is_company:
+        application = Application.objects.filter(applicant=request.user, job=job)
 
     return render(
         request,
@@ -470,14 +466,16 @@ def job_create_view(request):
     """
     View for the job create page.
     """
+    company_jobs = None
+    if request.user.is_authenticated and hasattr(request.user, "companyprofile"):
+        company_jobs = Job.objects.filter(
+            offered_by=request.user.companyprofile, due_date__gte=datetime.date.today()
+        )
 
-    company_jobs = Job.objects.filter(
-        offered_by=request.user.companyprofile, due_date__gte=datetime.date.today()
-    )
     if (
-        request.method == "POST"
-        and request.user.is_authenticated
-        and hasattr(request.user, "companyprofile")
+            request.method == "POST"
+            and request.user.is_authenticated
+            and hasattr(request.user, "companyprofile")
     ):
         form = JobForm(request.POST, user=request.user)
 
@@ -510,6 +508,7 @@ def job_create_view(request):
     return redirect("jobs")
 
 
+@login_exempt
 def company_details_view(request, company_name):
     """
     View for the company details page.
@@ -542,11 +541,12 @@ def company_details_view(request, company_name):
     return render(request, "company_details.html", context)
 
 
-@login_required()
 def applications_view(request):
     """
     View for the applications page.
     """
+    is_company = False
+    applications = Application.objects.none()
     if hasattr(request.user, 'userprofile'):
         applications = request.user.applications.all()
 
@@ -555,15 +555,18 @@ def applications_view(request):
         applications = Application.objects.none()
         for job in jobs:
             applications |= job.applications.all()
+        is_company = True
 
-    return render(request, "applications.html", {"applications": applications})
+    return render(request, "applications.html", {"applications": applications, "is_company": is_company})
 
 
+@login_exempt
 def handler404(request, exception, template_name="404.html"):
     response = render(request, template_name, exception)
     response.status_code = 404
     return response
 
 
-def handler500(request, *args, **argv):
+@login_exempt
+def handler500(request, *args):
     return render(request, "500.html", status=500)

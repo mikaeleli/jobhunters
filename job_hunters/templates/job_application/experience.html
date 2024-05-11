@@ -32,7 +32,7 @@
     <div class="card application__card">
         <h4 class="application__card__title">{{ item.role }}</h4>
         <p class="application__card__subtitle">{{ item.company }}</p>
-        <p class="application__card__text">{{ item.start_date|date:"F o" }} - {{ item.end_date|default_if_none:"current" }}</p>
+        <p class="application__card__text">{{ item.start_date }} - {{ item.end_date|default_if_none:"current" }}</p>
     </div>
     {% endfor %}
 </div>

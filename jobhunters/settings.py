@@ -49,6 +49,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "job_hunters.middleware.login_required_middleware.LoginRequiredMiddleware"
 ]
 
 ROOT_URLCONF = "jobhunters.urls"
