@@ -2,6 +2,8 @@
 Forms for the profile page.
 """
 
+from typing import Any
+
 from django import forms
 from job_hunters.models.image import Image
 
@@ -23,6 +25,24 @@ class ProfileForm(forms.Form):
     company_cover = forms.ImageField(required=False)
     company_description = forms.CharField(max_length=255, required=False)
     company_website = forms.URLField(required=False)
+
+    def clean(self) -> dict[str, Any]:
+        cleaned_data = super().clean()
+
+        user = self.user
+
+        if hasattr(user, "companyprofile"):
+
+            # check if company has address
+            if cleaned_data.get("company_name") == "":
+                self.add_error("company_name", "Company name is required")
+
+        elif hasattr(user, "userprofile"):
+            # check if full name is added
+            if cleaned_data.get("full_name") == "":
+                self.add_error("full_name", "Full name is required")
+
+        return cleaned_data
 
     def save(self):
         data = self.cleaned_data
