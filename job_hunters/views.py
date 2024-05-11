@@ -316,7 +316,7 @@ class ApplicationWizardView(SessionWizardView):
     def post(self, *args, **kwargs):
         current_form = APPLICATION_FORMS[int(self.steps.current)][2]
 
-        # if it's a navigation request, just render the form
+        # if it's a navigation request, fallback to the default behavior
         if "wizard_goto_step" in self.request.POST:
             return super().post(*args, **kwargs)
 
@@ -325,7 +325,7 @@ class ApplicationWizardView(SessionWizardView):
 
             current_form = current_form(request.POST)
 
-            if current_form.is_valid():
+            if current_form.has_required_data():
                 extra_data = self.storage.extra_data
 
                 if "experience" not in extra_data:
@@ -353,12 +353,15 @@ class ApplicationWizardView(SessionWizardView):
 
                 return self.render(self.get_form(self.steps.current, data={}))
 
-        elif current_form.prefix == "recommendation":
+            # if the form is not valid, render the form again with the errors
+            return super().post(*args, **kwargs)
+
+        if current_form.prefix == "recommendation":
             request = args[0]
 
             current_form = current_form(request.POST)
 
-            if current_form.is_valid():
+            if current_form.has_required_data():
                 extra_data = self.storage.extra_data
 
                 if "recommendations" not in extra_data:
@@ -384,6 +387,10 @@ class ApplicationWizardView(SessionWizardView):
 
                 return self.render(self.get_form(self.steps.current, data={}))
 
+            # if the form is not valid, render the form again with the errors
+            return super().post(*args, **kwargs)
+
+        # if it's not a form that requires special handling, fallback to the default behavior
         return super().post(*args, **kwargs)
 
     def done(self, form_list, **kwargs):
@@ -473,9 +480,9 @@ def job_create_view(request):
         )
 
     if (
-            request.method == "POST"
-            and request.user.is_authenticated
-            and hasattr(request.user, "companyprofile")
+        request.method == "POST"
+        and request.user.is_authenticated
+        and hasattr(request.user, "companyprofile")
     ):
         form = JobForm(request.POST, user=request.user)
 
@@ -547,7 +554,7 @@ def applications_view(request):
     """
     is_company = False
     applications = Application.objects.none()
-    if hasattr(request.user, 'userprofile'):
+    if hasattr(request.user, "userprofile"):
         applications = request.user.applications.all()
 
     elif hasattr(request.user, "companyprofile"):
@@ -557,7 +564,11 @@ def applications_view(request):
             applications |= job.applications.all()
         is_company = True
 
-    return render(request, "applications.html", {"applications": applications, "is_company": is_company})
+    return render(
+        request,
+        "applications.html",
+        {"applications": applications, "is_company": is_company},
+    )
 
 
 @login_exempt

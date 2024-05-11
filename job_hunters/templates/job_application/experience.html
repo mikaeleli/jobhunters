@@ -9,13 +9,13 @@
     
             <h2 class="application__form__title">{{ title }}</h2>
             
-            {% include "_input.html" with name="experience-role" label="Role" value=form.role.value errors=form.role.error %}
+            {% include "_input.html" with name="experience-role" label="Role" value=form.role.value errors=form.role.errors %}
             
-            {% include "_input.html" with name="experience-company" label="Company" value=form.company.value errors=form.company.error %}
+            {% include "_input.html" with name="experience-company" label="Company" value=form.company.value errors=form.company.errors %}
             
-            {% include "_input.html" with type="date" name="experience-start_date" label="Start date" value=form.start_date.value errors=form.start_date.error %}
+            {% include "_input.html" with type="date" name="experience-start_date" label="Start date" value=form.start_date.value errors=form.start_date.errors %}
             
-            {% include "_input.html" with type="date" name="experience-end_date" label="End date" value=form.end_date.value errors=form.end_date.error %}
+            {% include "_input.html" with type="date" name="experience-end_date" label="End date" value=form.end_date.value errors=form.end_date.errors %}
     
             <button type="submit" class="form__button form__button_secondary">
                 Add experience

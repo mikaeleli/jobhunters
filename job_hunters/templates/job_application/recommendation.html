@@ -9,15 +9,15 @@
 
             <h2 class="application__form__title">{{ title }}</h2>
             
-            {% include "_input.html" with name="recommendation-name" label="Name" value=form.name.value errors=form.name.error %}
+            {% include "_input.html" with name="recommendation-name" label="Name" value=form.name.value errors=form.name.errors %}
 
-            {% include "_input.html" with name="recommendation-role" label="Role" value=form.role.value errors=form.role.error %}
+            {% include "_input.html" with name="recommendation-role" label="Role" value=form.role.value errors=form.role.errors %}
             
-            {% include "_input.html" with name="recommendation-company" label="Company" value=form.company.value errors=form.company.error %}
+            {% include "_input.html" with name="recommendation-company" label="Company" value=form.company.value errors=form.company.errors %}
             
-            {% include "_input.html" with name="recommendation-email" label="Email" value=form.email.value errors=form.email.error %}
+            {% include "_input.html" with name="recommendation-email" label="Email" value=form.email.value errors=form.email.errors %}
             
-            {% include "_input.html" with name="recommendation-phone" label="Phone" value=form.phone.value errors=form.phone.error %}
+            {% include "_input.html" with name="recommendation-phone" label="Phone" value=form.phone.value errors=form.phone.errors %}
 
             <label class="checkbox__label">
                 <input type="checkbox" name="recommendation-can_be_contacted" {% if form.can_be_contacted.value %}checked{% endif %} />
