@@ -58,3 +58,35 @@
     border-radius:8px;
     text-decoration: none;
 }
+
+.application__item__status {
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    border-radius: 24px;
+    height: 48px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    margin: 0 16px 0 auto;
+}
+
+.application__item__status__in_progress {
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+}
+
+.application__item__status__accepted {
+    background: var(--color-success-light);
+    color: var(--color-success);
+    border: 2px solid var(--color-success);
+}
+
+.application__item__status__rejected {
+    background: var(--color-danger-light);
+    color: var(--color-danger);
+    border: 2px solid var(--color-danger);
+}

@@ -9,14 +9,27 @@
 
 {% block content %}
 <div class="job_details__container">
-    <div class="card job_details__company_details">
-        <h4 class="job_details__company__title">{{ job.offered_by.name }}</h4>
-        <p class="job_details__company__subtitle">{{ job.offered_by.address }}</p>
-        <div class="job_details__company__description">{% autoescape off %}{{ job.offered_by.description |safe |slice:120}}{% endautoescape %}</div>
-        <a href="{{ job.offered_by.get_absolute_url }}" class="job_details__company__link">
-            More about company
-        </a>
-    </div>
+    <aside>
+        {% if application %}
+            <div class="card job_details__applied">
+                <h4 class="job_details__applied__title">💥Yoo-hoo!👀</h4>
+                <p class="job_details__applied__subtitle">You already applied to this job</p>
+                <p class="job_details__applied__subtitle">Do you want to look at more available jobs?</p>
+                <a href="{% url 'jobs' %}" class="job_details__applied__link">
+                    See available jobs
+                </a>
+            </div>
+        {% endif %}
+        <div class="card job_details__company_details">
+            <img class="job_details__company__logo" src="{{ company_logo_data }}"/>
+            <h4 class="job_details__company__title">{{ job.offered_by.name }}</h4>
+            <p class="job_details__company__subtitle">{{ job.offered_by.address }}</p>
+            <div class="job_details__company__description">{% autoescape off %}{{ job.offered_by.description |safe |slice:120}}{% endautoescape %}</div>
+            <a href="{{ job.offered_by.get_absolute_url }}" class="job_details__company__link">
+                More about company
+            </a>
+        </div>
+    </aside>
 
     <div class="card job_details__card">
         <h3>{{ job.title }}</h3>
@@ -49,12 +62,22 @@
             <p>{{ job.starting_date|date:"M jS Y" }}</p>
 
             <p class="job_details__grid__header">Description</p>
-            <p>{{ job.description }}</p>
+            <div class="job_details__job__description">{% autoescape off %}{{ job.description |safe |slice:120}}{% endautoescape %}</div>
         <div/>
 
-        <a href="{% url 'job_apply' job_id=job.id %}" class="job_details__apply_button">
-            Apply for this job
-        </a>
+        {% if user_is_company %}
+            <div class="job_details__apply_button job_details__apply_button__disabled">
+                Companies can not apply for jobs
+            </div>
+        {% elif application %}
+            <div class="job_details__apply_button job_details__apply_button__status job_details__apply_button__status__{{ application_status }}">
+                {% if application_status == 'in_progress' %}In progress{% else %}{{ application_status |capfirst }}{% endif %}
+            </div>
+        {% else %}
+            <a href="{% url 'job_apply' job_id=job.id %}" class="job_details__apply_button">
+                Apply for this job
+            </a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

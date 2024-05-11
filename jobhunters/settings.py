@@ -79,6 +79,17 @@ DATABASES = {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'OPTIONS': {
+    #         'options': '-c search_path=vln2_assignment_groups_30'
+    #     },
+    #     'NAME': 'postgres',
+    #     'USER': 'vln2_assignment_groups_30_user',
+    #     'PASSWORD': 'XXXXXXXX',
+    #     'HOST': 'verklegt-namskeid-ii.northeurope.cloudapp.azure.com',
+    #     'PORT': '5432',
+    # }
 }
 
 

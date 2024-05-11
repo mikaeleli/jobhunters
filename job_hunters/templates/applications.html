@@ -35,6 +35,10 @@
                     <p class="application__item__date">{{ application.applied_at|date:"M jS Y" }}</p>
                 </div>
 
+                <div class="application__item__status application__item__status__{{ application_status }}">
+                    {% if application_status == 'in_progress' %}In progress{% else %}{{ application_status |capfirst }}{% endif %}
+                </div>
+
                 <a class="application__item__link" href="{% url 'job' job_id=application.job.id %}">
                     Details
                     <i class="fa-solid fa-arrow-right"></i>

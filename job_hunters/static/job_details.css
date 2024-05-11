@@ -4,18 +4,25 @@
     gap: 32px;
 }
 
-.job_details__company_details {
+.job_details__company_details, .job_details__applied {
     display: flex;
     flex-direction: column;
     gap: 16px;
     width: 400px;
     padding: 32px;
     height: max-content;
+    margin-bottom: 32px;
 }
 
 .job_details__company__title {
     font-size: 20px;
     font-weight: bold;
+}
+
+.job_details__company__logo {
+    aspect-ratio: 1;
+    object-fit: contain;
+    width: 128px;
 }
 
 .job_details__company__subtitle {
@@ -26,7 +33,7 @@
     font-size: 16px;
 }
 
-.job_details__company__description ul {
+.job_details__company__description ul, .job_details__job__description ul {
     list-style-type: unset;
     padding: 16px;
     margin: 16px;
@@ -53,7 +60,16 @@
     height: max-content;
 }
 
-.job_details__apply_button {
+.job_details__applied * {
+    padding-bottom: 16px;
+}
+
+.job_details__applied__title {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.job_details__apply_button, .job_details__applied__link {
     background: var(--color-primary);
     color: #fff;
     height: 48px;
@@ -64,6 +80,34 @@
     border-radius:8px;
     text-decoration: none;
     width: max-content;
+}
+
+.job_details__apply_button__disabled {
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    border-radius: 24px;
+}
+
+.job_details__apply_button__status__in_progress {
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    border-radius: 24px;
+}
+
+.job_details__apply_button__status__accepted {
+    background: var(--color-success-light);
+    color: var(--color-success);
+    border: 2px solid var(--color-success);
+    border-radius: 24px;
+}
+
+.job_details__apply_button__status__rejected {
+    background: var(--color-danger-light);
+    color: var(--color-danger);
+    border: 2px solid var(--color-danger);
+    border-radius: 24px;
 }
 
 .job_details__grid {
