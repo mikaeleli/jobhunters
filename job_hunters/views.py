@@ -31,7 +31,7 @@ from job_hunters.models import (
     Category,
     Application,
     Experience,
-    Recommendation, job,
+    Recommendation,
 )
 
 # Create your views here.
