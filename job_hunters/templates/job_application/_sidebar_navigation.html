@@ -1,0 +1,22 @@
+<div class="card application__sidebar">
+    <div class="application__sidebar__title__container">
+        <h3 class="application__sidebar__title">Job application</h3>
+        <p class="application__sidebar__subtititle">{{ job.title }}</p>
+        <p class="application__sidebar__subtititle">{{ job.offered_by.name }}</p>
+    </div>
+
+    <div class="application__sidebar__navigation__container">
+        <h4 class="application__sidebar__navigation__title">Navigation</h4>
+        <form method="post">
+            {% csrf_token %}
+            {{ wizard.management_form }}
+
+            <nav class="application__sidebar__navigation">
+                {% for item in nav_list %}
+                <!-- <a class="application__sidebar__navigation__link" href="" {% if item.is_current %}data-current-step{% endif %}>{{ item.title }}</a> -->
+                <button name="wizard_goto_step" type="submit" class="application__sidebar__navigation__link" value="{{ item.step }}" {% if item.is_current %}data-current-step{% endif %}>{{ item.title }}</button>
+                {% endfor %}
+            </nav>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,20 @@
+{% extends "_base.html" %}
+
+{% block title %}Job Hunters - Application - Success{% endblock %}
+
+{% block head %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'job_application/success.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="success__container">
+    <div class="card success__card">
+        <h2 class="success__title">Success 🎉</h2>
+
+        <p>You've successfully submitted an application for the role of <b>{{ job_title }}</b> at <b>{{ company_name }}</b>.</p>
+
+        <p>You can view you applications <a href="{% url 'applications' %}">here</a>.</p>
+    </div>
+</div>
+{% endblock %}

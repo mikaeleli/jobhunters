@@ -180,7 +180,7 @@ textarea.form__input {
     font-size: 14px;
 }
 
-button[type="submit"], .form__button {
+.form__button {
     height: 48px;
     background: var(--color-primary);
     border-radius: 8px;
@@ -189,6 +189,10 @@ button[type="submit"], .form__button {
     font-size: 16px;
     text-align: center;
     padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
 .form__button:link, .form__button:visited, .form__button:hover, .form__button:active  {

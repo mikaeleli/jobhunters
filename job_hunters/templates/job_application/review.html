@@ -1,0 +1,100 @@
+{% extends "job_application/_base_application.html" %}
+
+{% block application_form %}
+<div class="review__container">
+    <div class="card review__title__container">
+        <h2 class="application__form__title">{{ title }}</h2>
+        
+        <p>Please review your application carefully before submitting.</p>
+    </div>
+
+    <div class="card application__card">
+        <h4 class="application__card__title">Contact information</h4>
+
+        {% if contact_information %}
+        <div class="review__data__grid">
+            <p class="review__data__grid__header">Name</p>
+            <p>{{ contact_information.full_name }}</p>
+            
+            <p class="review__data__grid__header">Address</p>
+            <p>{{ contact_information.house_number }} {{ contact_information.street_name }}, {{ contact_information.city }} {{ contact_information.postal_code }}, {{ contact_information.country }}</p>
+        </div>
+        {% else %}
+        <p>No contact information added yet.</p>
+        {% endif %}
+    </div>
+
+    <div class="card application__card">
+        <h4 class="application__card__title">Cover letter</h4>
+
+        {% if cover_letter %}
+        <p>{{ cover_letter }}</p>
+        {% else %}
+        <p>No cover letter added yet.</p>
+        {% endif %}
+    </div>
+
+    <div class="card application__card">
+        <h4 class="application__card__title">Experience</h4>
+
+        {% for item in experience_data %}
+        <div class="review__data__grid">
+            <p class="review__data__grid__header">Role</p>
+            <p>{{ item.role }}</p>
+
+            <p class="review__data__grid__header">Company</p>
+            <p>{{ item.company }}</p>
+
+            <p class="review__data__grid__header">Start date</p>
+            <p>{{ item.start_date }}</p>
+
+            <p class="review__data__grid__header">End date</p>
+            <p>{{ item.end_date|default_if_none:"-" }}</p>
+        </div>
+        {% empty %}
+        <p>No recommendations added yet.</p>
+        {% endfor %}
+    </div>
+
+    <div class="card application__card">
+        <h4 class="application__card__title">Reccomendations</h4>
+
+        {% for item in recommendation_data %}
+        <div class="review__data__grid">
+            <p class="review__data__grid__header">Name</p>
+            <p>{{ item.role }}</p>
+
+            <p class="review__data__grid__header">Role</p>
+            <p>{{ item.role }}</p>
+
+            <p class="review__data__grid__header">Company</p>
+            <p>{{ item.company }}</p>
+
+            <p class="review__data__grid__header">Email</p>
+            <p>{{ item.email }}</p>
+
+            <p class="review__data__grid__header">Phone number</p>
+            <p>{{ item.phone }}</p>
+
+            <p class="review__data__grid__header">Can be contacted</p>
+            <p>{{ item.can_be_contacted|yesno:"Yes,No" }}</p>
+        </div>
+        {% empty %}
+        <p>No recommendations added yet.</p>
+        {% endfor %}
+    </div>
+
+    <div class="card">
+        <form method="post" class="application__contact__form">
+            {% csrf_token %}
+            {{ wizard.management_form }}
+            
+            <h3 class="review__form__title">All set?</h3>
+            
+            <button type="submit" class="form__button">
+                Submit application
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

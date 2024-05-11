@@ -1,0 +1,21 @@
+{% extends "_base.html" %}
+
+{% block title %}Job Hunters - Application - {{ form.title }}{% endblock %}
+
+{% block head %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'job_application/_base_application.css' %}" />
+<link rel="stylesheet" href="{% static 'job_application/contact_information.css' %}" />
+<link rel="stylesheet" href="{% static 'job_application/cover_letter.css' %}" />
+<link rel="stylesheet" href="{% static 'job_application/review.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="application__container">
+    {% include "job_application/_sidebar_navigation.html" with job=job nav_list=nav_list %}
+
+    <div>
+        {% block application_form %} {% endblock %}
+    </div>
+</div>
+{% endblock %}

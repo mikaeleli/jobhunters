@@ -1,0 +1,14 @@
+.success__container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.success__card {
+    width: 100%;
+    max-width: 800px;
+    height: max-content;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}

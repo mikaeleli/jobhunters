@@ -1,0 +1,39 @@
+{% extends "job_application/_base_application.html" %}
+
+{% block application_form %}
+<div class="application__list__container">
+    <div class="card application__contact__form__container">
+        <form method="post" class="application__contact__form">
+            {% csrf_token %}
+            {{ wizard.management_form }}
+    
+            <h2 class="application__form__title">{{ title }}</h2>
+            
+            {% include "_input.html" with name="experience-role" label="Role" value=form.role.value errors=form.role.error %}
+            
+            {% include "_input.html" with name="experience-company" label="Company" value=form.company.value errors=form.company.error %}
+            
+            {% include "_input.html" with type="date" name="experience-start_date" label="Start date" value=form.start_date.value errors=form.start_date.error %}
+            
+            {% include "_input.html" with type="date" name="experience-end_date" label="End date" value=form.end_date.value errors=form.end_date.error %}
+    
+            <button type="submit" class="form__button form__button_secondary">
+                Add experience
+                <i class="fas fa-plus"></i>
+            </button>
+    
+            <button type="submit" name="wizard_goto_step" value="{{ wizard.steps.next}}" class="form__button">
+                Next step
+            </button>
+        </form>
+    </div>
+
+    {% for item in experience_data %}
+    <div class="card application__card">
+        <h4 class="application__card__title">{{ item.role }}</h4>
+        <p class="application__card__subtitle">{{ item.company }}</p>
+        <p class="application__card__text">{{ item.start_date|date:"F o" }} - {{ item.end_date|default_if_none:"current" }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

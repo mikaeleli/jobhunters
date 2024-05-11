@@ -1,20 +1,38 @@
 """
 This file contains the views for the job_hunters app.
 """
+
 import datetime
+
+
 from base64 import b64encode
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
+from formtools.wizard.views import SessionWizardView
+
 
 from job_hunters.forms.job_create import JobForm
 from job_hunters.forms.jobs_filter import JobsFilter
 from job_hunters.forms.login import LoginForm
 from job_hunters.forms.profile import ProfileForm
 from job_hunters.forms.register import RegisterForm
-from job_hunters.models import Job, CompanyProfile, Category, Application
-
+from job_hunters.forms.job_application import (
+    ContactInformationForm,
+    CoverLetterForm,
+    ExperienceForm,
+    RecommendationForm,
+    ReviewForm,
+)
+from job_hunters.models import (
+    Job,
+    CompanyProfile,
+    Category,
+    Application,
+    Experience,
+    Recommendation,
+)
 
 # Create your views here.
 
@@ -85,12 +103,7 @@ def profile_view(request):
     """
     View for the profile page.
     """
-    context = {
-        "user": request.user,
-        "userprofile": False,
-        "companyprofile": False
-
-    }
+    context = {"user": request.user, "userprofile": False, "companyprofile": False}
 
     if hasattr(request.user, "companyprofile"):
         logo_image = request.user.companyprofile.logo_image
@@ -103,8 +116,9 @@ def profile_view(request):
             context["cover_data"] = cover_encoded
 
         context["logo_data"] = logo_encoded
-        context["company_jobs"] = Job.objects.filter(offered_by=request.user.companyprofile,
-                                                     due_date__gte=datetime.date.today())
+        context["company_jobs"] = Job.objects.filter(
+            offered_by=request.user.companyprofile, due_date__gte=datetime.date.today()
+        )
         context["companyprofile"] = True
 
     else:
@@ -168,14 +182,260 @@ def jobs_view(request):
             if order_by:
                 jobs = jobs.order_by(order_by)
 
-            return render(request, "jobs.html", {"jobs": jobs, "form": form, "user_is_company": user_is_company})
+            return render(
+                request,
+                "jobs.html",
+                {"jobs": jobs, "form": form, "user_is_company": user_is_company},
+            )
 
-        return render(request, "jobs.html", {"jobs": jobs, "form": form, "user_is_company": user_is_company})
+        return render(
+            request,
+            "jobs.html",
+            {"jobs": jobs, "form": form, "user_is_company": user_is_company},
+        )
 
     form = JobsFilter(categories=categories, companies=companies)
     jobs = Job.objects.all()
 
-    return render(request, "jobs.html", {"jobs": jobs, "form": form, "user_is_company": user_is_company})
+    return render(
+        request,
+        "jobs.html",
+        {"jobs": jobs, "form": form, "user_is_company": user_is_company},
+    )
+
+
+APPLICATION_FORMS = [
+    ("contact_information", "Contact Information", ContactInformationForm),
+    ("cover_letter", "Cover letter", CoverLetterForm),
+    ("experience", "Experience", ExperienceForm),
+    ("recommendation", "Recommendations", RecommendationForm),
+    ("review", "Review", ReviewForm),
+]
+
+
+APPLICATION_FORM_TEMPLATES = {
+    "contact_information": "job_application/contact_information.html",
+    "cover_letter": "job_application/cover_letter.html",
+    "experience": "job_application/experience.html",
+    "recommendation": "job_application/recommendation.html",
+    "review": "job_application/review.html",
+}
+
+
+class ApplicationWizardView(SessionWizardView):
+    form_list = [form for _, _, form in APPLICATION_FORMS]
+
+    def get_template_names(self):
+        name, _, _ = APPLICATION_FORMS[int(self.steps.current)]
+
+        return APPLICATION_FORM_TEMPLATES[name]
+
+    def get_form_prefix(self, step=None, form=None):
+        if not step:
+            step = self.steps.current
+
+        form = APPLICATION_FORMS[int(step)][2]
+
+        return form.prefix
+
+    def get_context_data(self, form, **kwargs):
+        context = super().get_context_data(form=form, **kwargs)
+
+        context["job"] = Job.objects.get(id=self.kwargs["job_id"])
+
+        context["title"] = APPLICATION_FORMS[int(self.steps.current)][1]
+
+        context["nav_list"] = []
+
+        for i, (name, title, _) in enumerate(APPLICATION_FORMS):
+            context["nav_list"].append(
+                {
+                    "name": name,
+                    "title": title,
+                    "is_current": i == int(self.steps.current),
+                    "step": i,
+                }
+            )
+
+        extra_data = self.storage.extra_data
+
+        if "experience" in extra_data:
+            raw_data = extra_data["experience"]
+            experience_data = []
+
+            # deserialize the data, converting date strings to date objects
+            for data in raw_data:
+                experience_data.append(
+                    {
+                        "role": data["role"],
+                        "company": data["company"],
+                        "start_date": datetime.date.strptime(
+                            data["start_date"], "%Y-%m-%d"
+                        ).date(),
+                        "end_date": (
+                            datetime.date.strptime(data["end_date"], "%Y-%m-%d").date()
+                            if "end_date" in data
+                            else None
+                        ),
+                    }
+                )
+
+            experience_data.sort(
+                key=lambda x: (
+                    x["end_date"]
+                    if x["end_date"] is not None
+                    else datetime.datetime.max.date()
+                ),
+                reverse=True,
+            )
+
+            context["experience_data"] = experience_data
+
+        if "recommendations" in extra_data:
+            raw_data = extra_data["recommendations"]
+            recommendation_data = []
+
+            for data in raw_data:
+                recommendation_data.append(
+                    {
+                        "name": data["name"],
+                        "role": data["role"],
+                        "company": data["company"],
+                        "email": data["email"],
+                        "phone": data["phone"],
+                        "can_be_contacted": data["can_be_contacted"],
+                    }
+                )
+
+            context["recommendation_data"] = recommendation_data
+
+        if form.prefix == "review":
+            contact_information = self.get_cleaned_data_for_step("0")
+            cover_letter = self.get_cleaned_data_for_step("1")
+
+            if contact_information:
+                context["contact_information"] = contact_information
+            if cover_letter:
+                context["cover_letter"] = cover_letter.get("cover_letter", "")
+
+        return context
+
+    def post(self, *args, **kwargs):
+        current_form = APPLICATION_FORMS[int(self.steps.current)][2]
+
+        # if it's a navigation request, just render the form
+        if "wizard_goto_step" in self.request.POST:
+            return super().post(*args, **kwargs)
+
+        if current_form.prefix == "experience":
+            request = args[0]
+
+            current_form = current_form(request.POST)
+
+            if current_form.is_valid():
+                extra_data = self.storage.extra_data
+
+                if "experience" not in extra_data:
+                    extra_data["experience"] = []
+
+                # json serialize the form data, then append it to the list
+                serialized_data = {
+                    "role": current_form.cleaned_data["role"],
+                    "company": current_form.cleaned_data["company"],
+                    "start_date": str(current_form.cleaned_data["start_date"]),
+                }
+
+                if current_form.cleaned_data["end_date"] is not None:
+                    serialized_data["end_date"] = str(
+                        current_form.cleaned_data["end_date"]
+                    )
+
+                extra_data["experience"].append(serialized_data)
+
+                self.storage.extra_data = extra_data
+
+                # clear current step data, since we don't want to prefill
+                # the form after a successful submission
+                self.storage.set_step_data(self.steps.current, {})
+
+                return self.render(self.get_form(self.steps.current, data={}))
+
+        elif current_form.prefix == "recommendation":
+            request = args[0]
+
+            current_form = current_form(request.POST)
+
+            if current_form.is_valid():
+                extra_data = self.storage.extra_data
+
+                if "recommendations" not in extra_data:
+                    extra_data["recommendations"] = []
+
+                # json serialize the form data, then append it to the list
+                serialized_data = {
+                    "name": current_form.cleaned_data["name"],
+                    "role": current_form.cleaned_data["role"],
+                    "company": current_form.cleaned_data["company"],
+                    "email": current_form.cleaned_data["email"],
+                    "phone": current_form.cleaned_data["phone"],
+                    "can_be_contacted": current_form.cleaned_data["can_be_contacted"],
+                }
+
+                extra_data["recommendations"].append(serialized_data)
+
+                self.storage.extra_data = extra_data
+
+                # clear current step data, since we don't want to prefill
+                # the form after a successful submission
+                self.storage.set_step_data(self.steps.current, {})
+
+                return self.render(self.get_form(self.steps.current, data={}))
+
+        return super().post(*args, **kwargs)
+
+    def done(self, form_list, **kwargs):
+        job = Job.objects.get(id=self.kwargs["job_id"])
+
+        contact_information = form_list[0].cleaned_data
+        cover_letter = form_list[1].cleaned_data["cover_letter"]
+
+        application = Application.objects.create(
+            job=job,
+            applicant=self.request.user,
+            full_name=contact_information["full_name"],
+            cover_letter=cover_letter,
+            street_name=contact_information["street_name"],
+            house_number=contact_information["house_number"],
+            city=contact_information["city"],
+            postal_code=contact_information["postal_code"],
+            country=contact_information["country"],
+        )
+
+        for experience in self.storage.extra_data.get("experience", []):
+            Experience.objects.create(
+                application=application,
+                role=experience["role"],
+                workplace_name=experience["company"],
+                start_date=experience["start_date"],
+                end_date=experience["end_date"],
+            )
+
+        for recommendation in self.storage.extra_data.get("recommendations", []):
+            Recommendation.objects.create(
+                application=application,
+                name=recommendation["name"],
+                email=recommendation["email"],
+                phone_number=recommendation["phone"],
+                role=recommendation["role"],
+                can_be_contacted=recommendation["can_be_contacted"],
+            )
+
+        context = {
+            "job_title": job.title,
+            "company_name": job.offered_by.name,
+        }
+
+        return render(self.request, "job_application/success.html", context)
 
 
 def job_view(request, job_id):
@@ -188,27 +448,27 @@ def job_view(request, job_id):
     company_logo_b64 = b64encode(company_logo_image.image_data).decode("utf-8")
     company_logo_data_encoded = f"data:image/png;base64,{company_logo_b64}"
 
-    user_is_company = True if request.user.is_authenticated and hasattr(request.user, "companyprofile") else False
+    user_is_company = (
+        True
+        if request.user.is_authenticated and hasattr(request.user, "companyprofile")
+        else False
+    )
 
     # TODO, fetch actual status when it has been added (will be part of application object)
     application = Application.objects.filter(applicant=request.user).first()
     application_status = "rejected"
 
-    return render(request, "job_details.html", {"job": job,
-                                                "company_logo_data": company_logo_data_encoded,
-                                                "application": application,
-                                                "user_is_company": user_is_company,
-                                                "application_status": application_status})
-
-
-def job_apply_view(request, job_id):
-    """
-    View for the job apply page.
-    """
-
-    # TODO: Implement job application logic.
-
-    return redirect("jobs")
+    return render(
+        request,
+        "job_details.html",
+        {
+            "job": job,
+            "company_logo_data": company_logo_data_encoded,
+            "application": application,
+            "user_is_company": user_is_company,
+            "application_status": application_status,
+        },
+    )
 
 
 def job_create_view(request):
@@ -216,28 +476,43 @@ def job_create_view(request):
     View for the job create page.
     """
 
-    company_jobs = Job.objects.filter(offered_by=request.user.companyprofile, due_date__gte=datetime.date.today())
-    if request.method == "POST" and request.user.is_authenticated and hasattr(request.user, "companyprofile"):
+    company_jobs = Job.objects.filter(
+        offered_by=request.user.companyprofile, due_date__gte=datetime.date.today()
+    )
+    if (
+        request.method == "POST"
+        and request.user.is_authenticated
+        and hasattr(request.user, "companyprofile")
+    ):
         form = JobForm(request.POST, user=request.user)
 
         if form.is_valid():
             form.save()
             return redirect("jobs")
 
-        return render(request, "job_create.html",
-                      {"company": request.user.companyprofile,
-                       "job_categories": Category.objects.all(),
-                       "company_jobs": company_jobs,
-                       "form": form})
+        return render(
+            request,
+            "job_create.html",
+            {
+                "company": request.user.companyprofile,
+                "job_categories": Category.objects.all(),
+                "company_jobs": company_jobs,
+                "form": form,
+            },
+        )
 
     if request.user.is_authenticated and hasattr(request.user, "companyprofile"):
-        return render(request, "job_create.html",
-                                            {"company": request.user.companyprofile,
-                                                   "job_categories": Category.objects.all(),
-                                                   "company_jobs": company_jobs})
+        return render(
+            request,
+            "job_create.html",
+            {
+                "company": request.user.companyprofile,
+                "job_categories": Category.objects.all(),
+                "company_jobs": company_jobs,
+            },
+        )
 
     return redirect("jobs")
-
 
 
 def company_details_view(request, company_name):
@@ -246,7 +521,9 @@ def company_details_view(request, company_name):
     """
     company_name = company_name.replace("_", " ")
     company = CompanyProfile.objects.filter(name__iexact=company_name).first()
-    company_jobs = Job.objects.filter(offered_by=company, due_date__gte=datetime.date.today())
+    company_jobs = Job.objects.filter(
+        offered_by=company, due_date__gte=datetime.date.today()
+    )
 
     context = {
         "company": company,
@@ -269,6 +546,7 @@ def company_details_view(request, company_name):
 
     return render(request, "company_details.html", context)
 
+
 @login_required()
 def applications_view(request):
     """
@@ -279,16 +557,23 @@ def applications_view(request):
 
     # TODO: remove and change template to use status from application object
     import random
+
     application_status = random.choice(["in_progress", "rejected", "accepted"])
 
     print(application_status)
 
-    return render(request, "applications.html", {"applications": applications, "application_status": application_status})
+    return render(
+        request,
+        "applications.html",
+        {"applications": applications, "application_status": application_status},
+    )
+
 
 def handler404(request, exception, template_name="404.html"):
     response = render(request, template_name, exception)
     response.status_code = 404
     return response
 
+
 def handler500(request, *args, **argv):
-    return render(request, '500.html', status=500)
+    return render(request, "500.html", status=500)
