@@ -8,7 +8,7 @@
 
         <h2 class="application__form__title">{{ title }}</h2>
 
-        {% include "_input.html" with name="contact_information-full_name" label="Full name" value=user.get_full_name errors=form.full_name.error %}
+        {% include "_input.html" with name="contact_information-full_name" label="Full name" value=user.get_full_name errors=form.full_name.errors %}
 
         {% include "_input.html" with name="contact_information-street_name" label="Street name" value=form.street_name.value errors=form.street_name.errors %}
 

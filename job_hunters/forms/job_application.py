@@ -49,6 +49,15 @@ class ExperienceForm(forms.Form):
 
         return True
 
+    def has_required_data(self) -> bool:
+        required_fields = ["role", "company", "start_date"]
+
+        return (
+            self.is_valid()
+            and hasattr(self, "cleaned_data")
+            and all(self.cleaned_data.get(field) for field in required_fields)
+        )
+
     def clean(self) -> dict[str, Any]:
         cleaned_data = super().clean()
 
@@ -84,6 +93,15 @@ class RecommendationForm(forms.Form):
             return super().is_valid()
 
         return True
+
+    def has_required_data(self) -> bool:
+        required_fields = ["name", "role", "company", "email", "phone"]
+
+        return (
+            self.is_valid()
+            and hasattr(self, "cleaned_data")
+            and all(self.cleaned_data.get(field) for field in required_fields)
+        )
 
 
 class ReviewForm(forms.Form):
