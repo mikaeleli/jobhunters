@@ -13,7 +13,8 @@ from job_hunters.forms.jobs_filter import JobsFilter
 from job_hunters.forms.login import LoginForm
 from job_hunters.forms.profile import ProfileForm
 from job_hunters.forms.register import RegisterForm
-from job_hunters.models import Job, CompanyProfile, Category
+from job_hunters.models import Job, CompanyProfile, Category, Application
+
 
 # Create your views here.
 
@@ -102,7 +103,8 @@ def profile_view(request):
             context["cover_data"] = cover_encoded
 
         context["logo_data"] = logo_encoded
-        context["company_jobs"] = Job.objects.filter(offered_by=request.user.companyprofile, due_date__gte=datetime.date.today())
+        context["company_jobs"] = Job.objects.filter(offered_by=request.user.companyprofile,
+                                                     due_date__gte=datetime.date.today())
         context["companyprofile"] = True
 
     else:
@@ -182,8 +184,21 @@ def job_view(request, job_id):
     """
 
     job = Job.objects.get(id=job_id)
+    company_logo_image = job.offered_by.logo_image
+    company_logo_b64 = b64encode(company_logo_image.image_data).decode("utf-8")
+    company_logo_data_encoded = f"data:image/png;base64,{company_logo_b64}"
 
-    return render(request, "job_details.html", {"job": job})
+    user_is_company = True if request.user.is_authenticated and hasattr(request.user, "companyprofile") else False
+
+    # TODO, fetch actual status when it has been added (will be part of application object)
+    application = Application.objects.filter(applicant=request.user).first()
+    application_status = "rejected"
+
+    return render(request, "job_details.html", {"job": job,
+                                                "company_logo_data": company_logo_data_encoded,
+                                                "application": application,
+                                                "user_is_company": user_is_company,
+                                                "application_status": application_status})
 
 
 def job_apply_view(request, job_id):
@@ -194,6 +209,7 @@ def job_apply_view(request, job_id):
     # TODO: Implement job application logic.
 
     return redirect("jobs")
+
 
 def job_create_view(request):
     """
@@ -208,10 +224,17 @@ def job_create_view(request):
             form.save()
             return redirect("jobs")
 
-        return render(request, "job_create.html", {"company": request.user.companyprofile, "job_categories": Category.objects.all(), "company_jobs": company_jobs, "form": form})
+        return render(request, "job_create.html",
+                      {"company": request.user.companyprofile,
+                       "job_categories": Category.objects.all(),
+                       "company_jobs": company_jobs,
+                       "form": form})
 
     if request.user.is_authenticated and hasattr(request.user, "companyprofile"):
-        return render(request, "job_create.html", {"company": request.user.companyprofile, "job_categories": Category.objects.all(), "company_jobs": company_jobs})
+        return render(request, "job_create.html",
+                                            {"company": request.user.companyprofile,
+                                                   "job_categories": Category.objects.all(),
+                                                   "company_jobs": company_jobs})
 
     return redirect("jobs")
 
@@ -246,7 +269,7 @@ def company_details_view(request, company_name):
 
     return render(request, "company_details.html", context)
 
-
+@login_required()
 def applications_view(request):
     """
     View for the applications page.
@@ -254,7 +277,13 @@ def applications_view(request):
 
     applications = request.user.applications.all()
 
-    return render(request, "applications.html", {"applications": applications})
+    # TODO: remove and change template to use status from application object
+    import random
+    application_status = random.choice(["in_progress", "rejected", "accepted"])
+
+    print(application_status)
+
+    return render(request, "applications.html", {"applications": applications, "application_status": application_status})
 
 def handler404(request, exception, template_name="404.html"):
     response = render(request, template_name, exception)
