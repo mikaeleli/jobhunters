@@ -31,7 +31,7 @@ from job_hunters.models import (
     Category,
     Application,
     Experience,
-    Recommendation,
+    Recommendation, job,
 )
 
 # Create your views here.
@@ -452,7 +452,7 @@ def job_view(request, job_id):
         request.user.is_authenticated and hasattr(request.user, "companyprofile")
     )
 
-    application = Application.objects.filter(applicant=request.user).first()
+    application = Application.objects.filter(applicant=request.user, job=job)
 
     return render(
         request,
@@ -547,8 +547,14 @@ def applications_view(request):
     """
     View for the applications page.
     """
+    if hasattr(request.user, 'userprofile'):
+        applications = request.user.applications.all()
 
-    applications = request.user.applications.all()
+    elif hasattr(request.user, "companyprofile"):
+        jobs = Job.objects.filter(offered_by=request.user.companyprofile)
+        applications = Application.objects.none()
+        for job in jobs:
+            applications |= job.applications.all()
 
     return render(request, "applications.html", {"applications": applications})
 
