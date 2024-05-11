@@ -73,7 +73,7 @@
     margin: 0 16px 0 auto;
 }
 
-.application__item__status__in_progress {
+.application__item__status__pending {
     background: var(--color-primary-light);
     color: var(--color-primary);
     border: 2px solid var(--color-primary);

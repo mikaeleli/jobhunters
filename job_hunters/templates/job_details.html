@@ -70,8 +70,8 @@
                 Companies can not apply for jobs
             </div>
         {% elif application %}
-            <div class="job_details__apply_button job_details__apply_button__status job_details__apply_button__status__{{ application_status }}">
-                {% if application_status == 'in_progress' %}In progress{% else %}{{ application_status |capfirst }}{% endif %}
+            <div class="job_details__apply_button job_details__apply_button__status job_details__apply_button__status__{{ application.status|lower }}">
+                {{ application.status|lower|capfirst }}
             </div>
         {% else %}
             <a href="{% url 'job_apply' job_id=job.id %}" class="job_details__apply_button">

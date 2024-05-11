@@ -89,7 +89,7 @@
     border-radius: 24px;
 }
 
-.job_details__apply_button__status__in_progress {
+.job_details__apply_button__status__pending {
     background: var(--color-primary-light);
     color: var(--color-primary);
     border: 2px solid var(--color-primary);
