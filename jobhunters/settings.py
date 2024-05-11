@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "job_hunters.apps.JobHuntersConfig",
     "formtools",
+    "django_countries",
 ]
 
 MIDDLEWARE = [
@@ -49,7 +50,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "job_hunters.middleware.login_required_middleware.LoginRequiredMiddleware"
+    "job_hunters.middleware.login_required_middleware.LoginRequiredMiddleware",
 ]
 
 ROOT_URLCONF = "jobhunters.urls"
@@ -136,5 +137,5 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = '/login'
-LOGIN_URL = '/login'
+LOGIN_REDIRECT_URL = "/login"
+LOGIN_URL = "/login"
