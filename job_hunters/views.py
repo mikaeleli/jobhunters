@@ -448,7 +448,9 @@ def job_view(request, job_id):
 
     application = None
     if request.user.is_authenticated and not user_is_company:
-        application = Application.objects.filter(applicant=request.user, job=job)
+        matching_applications = Application.objects.filter(applicant=request.user, job=job)
+        if matching_applications.count() > 0:
+            application = matching_applications.first()
 
     return render(
         request,
