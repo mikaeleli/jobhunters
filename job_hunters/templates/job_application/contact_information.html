@@ -7,12 +7,8 @@
         {{ wizard.management_form }}
 
         <h2 class="application__form__title">{{ title }}</h2>
-        
-        {% if form.full_name.value %}
-            {% include "_input.html" with name="contact_information-full_name" label="Full name" value=form.full_name.value errors=form.full_name.errors %}
-        {% else %}
-            {% include "_input.html" with name="contact_information-full_name" label="Full name" value=user.userprofile.full_name errors=form.full_name.errors %}
-        {% endif %}
+
+        {% include "_input.html" with name="contact_information-full_name" label="Full name" value=form.full_name.value errors=form.full_name.errors %}
 
         {% include "_input.html" with name="contact_information-street_name" label="Street name" value=form.street_name.value errors=form.street_name.errors %}
 

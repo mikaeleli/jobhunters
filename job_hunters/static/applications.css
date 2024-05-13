@@ -16,6 +16,11 @@
     padding: 32px;
 }
 
+.application__item__empty {
+    font-weight: 600;
+    font-size: 20px;
+}
+
 .application__item__titles__container {
     display: flex;
     flex-direction: column;
