@@ -79,7 +79,9 @@ def login_view(request):
 
             if user is not None:
                 login(request, user)
-                return redirect("profile")
+                next_url = request.GET.get("next", "profile")
+
+                return redirect(next_url)
 
         return render(request, "login.html", {"form": form})
 
@@ -518,8 +520,8 @@ def job_create_view(request):
         form = JobForm(request.POST, user=request.user)
 
         if form.is_valid():
-            form.save()
-            return redirect("jobs")
+            job = form.save()
+            return redirect("job", job.id)
 
         return render(
             request,

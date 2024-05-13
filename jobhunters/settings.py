@@ -89,7 +89,7 @@ DATABASES = {
         },
         "NAME": "postgres",
         "USER": "vln2_assignment_groups_30_user",
-        "PASSWORD": "XXXX",
+        "PASSWORD": "",
         "HOST": "verklegt-namskeid-ii.northeurope.cloudapp.azure.com",
         "PORT": "5432",
     }
@@ -137,5 +137,5 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = "/login"
+LOGIN_REDIRECT_URL = "/jobs"
 LOGIN_URL = "/login"
