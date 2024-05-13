@@ -24,15 +24,15 @@
             </div>
             <div class="company__company-details">
                     <h1 class="company__company-details-full-row">{{ company.name }}</h1>
-                    <p class="company__company-address"><i class="fa-solid fa-location-dot"></i> {{ company.address }}</p>
+                    <p class="company__company-address"><i class="fa-solid fa-location-dot"></i> {{ company.address|default_if_none:"" }}</p>
                     <div class="company__company-description">
                         {% autoescape off %}
-                            <p>{{ company.description |safe }}</p>
+                            <p>{{ company.description |default_if_none:""|safe }}</p>
                         {% endautoescape %}
                     </div>
 
                     <div>
-                        <a href="{{ company.webpage_url }}" target="_blank" class="company__website">{{ company.webpage_url }}</a>
+                        {% if company.webpage_url %}<a href="{{ company.webpage_url }}" target="_blank" class="company__website">{{ company.webpage_url }}</a>{% endif %}
                     </div>
             </div>
         </div>

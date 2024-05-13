@@ -121,7 +121,7 @@
 
                     <div class="form__field profile__company-form-description">
                         <label for="company_description">Description</label>
-                        <textarea id="company_description" name="company_description" placeholder="Description" class="form__input">{{ user.companyprofile.description }}</textarea>
+                        <textarea id="company_description" name="company_description" placeholder="Description" class="form__input">{{ user.companyprofile.description|default_if_none:"" }}</textarea>
                         {% if form.company_description.errors %}
                             <ul class="form__error__list">
                                 {% for error in form.company_description.errors %}
