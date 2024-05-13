@@ -62,7 +62,7 @@
             <p>{{ job.starting_date|date:"M jS Y" }}</p>
 
             <p class="job_details__grid__header">Description</p>
-            <div class="job_details__job__description">{% autoescape off %}{{ job.description |safe |slice:120}}{% endautoescape %}</div>
+            <div class="job_details__job__description">{% autoescape off %}{{ job.description |safe}}{% endautoescape %}</div>
         <div/>
 
         {% if user_is_company %}
