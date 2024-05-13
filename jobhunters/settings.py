@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-!n3wb6o*jw1)a$9ewf(x7_($fdlv2-_ch6i2^694&qvpvy%ryr"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
@@ -78,21 +78,21 @@ WSGI_APPLICATION = "jobhunters.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'OPTIONS': {
-    #         'options': '-c search_path=vln2_assignment_groups_30'
-    #     },
-    #     'NAME': 'postgres',
-    #     'USER': 'vln2_assignment_groups_30_user',
-    #     'PASSWORD': 'XXXXXXXX',
-    #     'HOST': 'verklegt-namskeid-ii.northeurope.cloudapp.azure.com',
-    #     'PORT': '5432',
+    # "default": {
+    #     "ENGINE": "django.db.backends.sqlite3",
+    #     "NAME": BASE_DIR / "db.sqlite3",
     # }
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "OPTIONS": {
+            "options": "-c search_path=vln2_assignment_groups_30"
+        },
+        "NAME": "postgres",
+        "USER": "vln2_assignment_groups_30_user",
+        "PASSWORD": "XXXX",
+        "HOST": "verklegt-namskeid-ii.northeurope.cloudapp.azure.com",
+        "PORT": "5432",
+    }
 }
 
 

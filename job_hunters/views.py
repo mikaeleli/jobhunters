@@ -519,8 +519,8 @@ def job_create_view(request):
         form = JobForm(request.POST, user=request.user)
 
         if form.is_valid():
-            form.save()
-            return redirect("jobs")
+            job = form.save()
+            return redirect("job", job.id)
 
         return render(
             request,

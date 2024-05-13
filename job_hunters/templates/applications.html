@@ -47,7 +47,7 @@
         </div>
         {% empty %}
         <div class="card application__item">
-            <p class="application__item__empty">You have not applied to any jobs yet.</p>
+            <p class="application__item__empty">{% if is_company %}No one has applied to your jobs yet.{% else %}You have not applied to any jobs yet.{% endif %}</p>
         </div>
         {% endfor %}
     </div>
