@@ -68,7 +68,7 @@ class ExperienceForm(forms.Form):
         start_date = cleaned_data.get("start_date")
         end_date = cleaned_data.get("end_date")
 
-        if end_date and start_date > end_date:
+        if bool(end_date) and start_date > end_date:
             self.add_error("start_date", "Start date must be before end date")
             self.add_error("end_date", "End date must be after start date")
 
