@@ -146,8 +146,13 @@ def jobs_view(request):
     View for the jobs page.
     """
     user_is_company = False
+    user_is_jobseeker = False
+
     if request.user.is_authenticated and hasattr(request.user, "companyprofile"):
         user_is_company = True
+
+    if request.user.is_authenticated and hasattr(request.user, "userprofile"):
+        user_is_jobseeker = True
 
     categories = Category.objects.all()
     companies = CompanyProfile.objects.all()
@@ -176,7 +181,7 @@ def jobs_view(request):
 
             jobs = jobs.filter(**filters)
 
-            if not include_applied:
+            if user_is_jobseeker and not include_applied:
                 jobs = jobs.exclude(applications__applicant=request.user)
 
             if order_by:
@@ -185,13 +190,13 @@ def jobs_view(request):
             return render(
                 request,
                 "jobs.html",
-                {"jobs": jobs, "form": form, "user_is_company": user_is_company},
+                {"jobs": jobs, "form": form, "user_is_company": user_is_company, "user_is_jobseeker": user_is_jobseeker},
             )
 
         return render(
             request,
             "jobs.html",
-            {"jobs": jobs, "form": form, "user_is_company": user_is_company},
+            {"jobs": jobs, "form": form, "user_is_company": user_is_company, "user_is_jobseeker": user_is_jobseeker},
         )
 
     form = JobsFilter(categories=categories, companies=companies)
@@ -200,7 +205,7 @@ def jobs_view(request):
     return render(
         request,
         "jobs.html",
-        {"jobs": jobs, "form": form, "user_is_company": user_is_company},
+        {"jobs": jobs, "form": form, "user_is_company": user_is_company, "user_is_jobseeker": user_is_jobseeker},
     )
 
 

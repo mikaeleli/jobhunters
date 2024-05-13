@@ -20,7 +20,11 @@ class LoginRequiredMiddleware:
             return
 
         # Exclude login, logout and register views.
-        if view_func.__name__ in ['login_view', 'register_view', 'logout_view']:
+        if view_func.__name__ in ['login_view', 'register_view', 'logout_view', 'admin']:
+            return
+
+        # django admin checks for auth on it's own, exclude here to allow users without email on /admin
+        if request.path.startswith('/admin/'):
             return
 
         return login_required(view_func)(request, *view_args, **view_kwargs)

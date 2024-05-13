@@ -84,7 +84,7 @@
                 </div>
 
                 <label class="checkbox__label">
-                    <input type="checkbox" name="include_applied" {% if form.include_applied.value %}checked{% endif %} />
+                    <input type="checkbox" name="include_applied" {% if user_is_jobseeker %}{% if form.include_applied.value %}checked{% endif %}{% endif %} {% if not user_is_jobseeker %}disabled{% endif %} />
                     Include applied jobs
                 </label>
 
