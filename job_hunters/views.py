@@ -303,9 +303,8 @@ class ApplicationWizardView(SessionWizardView):
 
             experience_data.sort(
                 key=lambda x: (
-                    x["end_date"]
-                    if x["end_date"] is not None
-                    else datetime.datetime.max.date()
+                    x["start_date"],
+                    x["end_date"] if x["end_date"] is not None else datetime.date.max,
                 ),
                 reverse=True,
             )
@@ -519,8 +518,8 @@ def job_create_view(request):
         form = JobForm(request.POST, user=request.user)
 
         if form.is_valid():
-            job = form.save()
-            return redirect("job", job.id)
+            form.save()
+            return redirect("jobs")
 
         return render(
             request,
