@@ -190,13 +190,23 @@ def jobs_view(request):
             return render(
                 request,
                 "jobs.html",
-                {"jobs": jobs, "form": form, "user_is_company": user_is_company, "user_is_jobseeker": user_is_jobseeker},
+                {
+                    "jobs": jobs,
+                    "form": form,
+                    "user_is_company": user_is_company,
+                    "user_is_jobseeker": user_is_jobseeker,
+                },
             )
 
         return render(
             request,
             "jobs.html",
-            {"jobs": jobs, "form": form, "user_is_company": user_is_company, "user_is_jobseeker": user_is_jobseeker},
+            {
+                "jobs": jobs,
+                "form": form,
+                "user_is_company": user_is_company,
+                "user_is_jobseeker": user_is_jobseeker,
+            },
         )
 
     form = JobsFilter(categories=categories, companies=companies)
@@ -205,7 +215,12 @@ def jobs_view(request):
     return render(
         request,
         "jobs.html",
-        {"jobs": jobs, "form": form, "user_is_company": user_is_company, "user_is_jobseeker": user_is_jobseeker},
+        {
+            "jobs": jobs,
+            "form": form,
+            "user_is_company": user_is_company,
+            "user_is_jobseeker": user_is_jobseeker,
+        },
     )
 
 
@@ -241,6 +256,16 @@ class ApplicationWizardView(SessionWizardView):
         form = APPLICATION_FORMS[int(step)][2]
 
         return form.prefix
+
+    def get_form_initial(self, step):
+        form_name = APPLICATION_FORMS[int(step)][0]
+
+        if form_name == "contact_information":
+            return {
+                "full_name": self.request.user.userprofile.full_name,
+            }
+
+        return super().get_form_initial(step)
 
     def get_context_data(self, form, **kwargs):
         context = super().get_context_data(form=form, **kwargs)
@@ -356,7 +381,7 @@ class ApplicationWizardView(SessionWizardView):
                 # the form after a successful submission
                 self.storage.set_step_data(self.steps.current, {})
 
-                return self.render(self.get_form(self.steps.current, data={}))
+                return self.render(self.get_form(self.steps.current))
 
             # if the form is not valid, render the form again with the errors
             return super().post(*args, **kwargs)
@@ -390,7 +415,7 @@ class ApplicationWizardView(SessionWizardView):
                 # the form after a successful submission
                 self.storage.set_step_data(self.steps.current, {})
 
-                return self.render(self.get_form(self.steps.current, data={}))
+                return self.render(self.get_form(self.steps.current))
 
             # if the form is not valid, render the form again with the errors
             return super().post(*args, **kwargs)
@@ -460,7 +485,9 @@ def job_view(request, job_id):
 
     application = None
     if request.user.is_authenticated and not user_is_company:
-        matching_applications = Application.objects.filter(applicant=request.user, job=job)
+        matching_applications = Application.objects.filter(
+            applicant=request.user, job=job
+        )
         if matching_applications.count() > 0:
             application = matching_applications.first()
 
