@@ -37,7 +37,7 @@ from job_hunters.models import (
 
 
 @login_exempt
-def index():
+def index(_):
     """
     View for the index page.
     """
