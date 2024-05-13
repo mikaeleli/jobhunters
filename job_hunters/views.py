@@ -37,15 +37,12 @@ from job_hunters.models import (
 
 
 @login_exempt
-def index(request):
+def index():
     """
     View for the index page.
     """
 
-    if request.user.is_authenticated:
-        return render(request, "index.html", {"user": request.user})
-
-    return render(request, "index.html")
+    return redirect("jobs")
 
 
 def register_view(request):
@@ -57,8 +54,9 @@ def register_view(request):
         form = RegisterForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-        else:
-            return render(request, "register.html", {"form": form})
+            return redirect("login")
+
+        return render(request, "register.html", {"form": form})
 
     form = RegisterForm()
 
