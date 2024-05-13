@@ -23,7 +23,7 @@
 
                     <div class="form__field">
                         <label for="full_name">Full name</label>
-                        <input id="full_name" type="text" name="full_name" placeholder="Full name" class="form__input" value="{{ user.get_full_name }}" />
+                        <input id="full_name" type="text" name="full_name" placeholder="Full name" class="form__input" value="{{ user.userprofile.full_name }}" />
                         {% if form.full_name.errors %}
                             <ul class="form__error__list">
                                 {% for error in form.full_name.errors %}
