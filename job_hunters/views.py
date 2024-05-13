@@ -444,7 +444,7 @@ class ApplicationWizardView(SessionWizardView):
                 role=experience["role"],
                 workplace_name=experience["company"],
                 start_date=experience["start_date"],
-                end_date=experience["end_date"],
+                end_date=experience.get("end_date", None),
             )
 
         for recommendation in self.storage.extra_data.get("recommendations", []):
