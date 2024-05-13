@@ -71,7 +71,7 @@ def create_companies(apps, schema_editor):
         for _ in range(0, 5):
             company_bullets += f"<li>{fake.bs()}</li>\n"
 
-        company_description = f"<strong>{fake.catch_phrase()}</strong>\n\n<ul>\n{company_bullets}</ul>\n\n{fake.paragraph(nb_sentences=20)}\n\n{fake.paragraph(nb_sentences=20)}"
+        company_description = f"<strong>{fake.catch_phrase()}</strong>\n\n<ul>\n{company_bullets}</ul>\n\n<p>{fake.paragraph(nb_sentences=20)}</p>\n\n<p>{fake.paragraph(nb_sentences=20)}</p>"
         CompanyProfile.objects.create(
             user=user,
             name=f'{company_name} {fake.company_suffix()}',
