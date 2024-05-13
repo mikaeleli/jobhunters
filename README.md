@@ -44,4 +44,8 @@ We provide a command to conveniently set the password for all users, strictly fo
 ```
 python manage.py change_all_passwords PASSWORD  // Where PASSWORD is a string that you want to put as all users password
 ```
+Also for ease of testing you can print all the usernames of all company and job seeking users  to the terminal with this command:
 
+```
+python manage.py get_all_usernames
+```
