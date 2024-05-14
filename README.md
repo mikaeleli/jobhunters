@@ -39,11 +39,21 @@ database connection in settings.py and then re-running the migration.
 The migration imports a lot of data for demonstration purposes. In this process it creates users that you might want to
 login as while testing the system.
 
+\
+To run the app you can type into the terminal
+
+```
+python manage.py runserver
+```
+
+\
 We provide a command to conveniently set the password for all users, strictly for testing of course.
 
 ```
 python manage.py change_all_passwords PASSWORD  // Where PASSWORD is a string that you want to put as all users password
 ```
+
+\
 Also for ease of testing you can print all the usernames of all company and job seeking users  to the terminal with this command:
 
 ```

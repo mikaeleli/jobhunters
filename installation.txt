@@ -32,3 +32,9 @@ Also for ease of testing you can print all the usernames of all company and job 
 ```
 python manage.py get_all_usernames
 ```
+
+To run the app you can type into the terminal
+
+```
+python manage.py runserver
+```
